@@ -1,9 +1,10 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import {FilterType, TaskType} from '../../App';
 import './Todolist.css'
+import {AddItemInput} from './AddItemInput';
 
 //types
-type ErrorType = null | string
+export type ErrorType = null | string
 type TodoListPropsType = {
     title: string
     filter: FilterType;
@@ -22,14 +23,14 @@ type TodoListPropsType = {
 
 export const TodoList: React.FC<TodoListPropsType> = ({title, tasks, filter, removeTasks, addTasks, changeFilter, statusChange, id, removeTodoList}) => {
     //local state level
-    const [newTaskTitle, setNewTaskTitle] = useState('');
-    const [error, setError] = useState<ErrorType>(null)
 
+    const onAddTaskButtonClick = (title: string) =>{
+        return addTasks(title, id);
+    }
     let liElements = tasks.map(t => {
         //li event subscribers
         const onClickHandler = () => removeTasks(t.id, id);
         const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => statusChange(t.id, e.currentTarget.checked, id)
-
         return <li className={t.isDone ? 'is-done' : ''} key={t.id}>
             <input
                 type="checkbox"
@@ -41,48 +42,16 @@ export const TodoList: React.FC<TodoListPropsType> = ({title, tasks, filter, rem
             </span>
             <button onClick={onClickHandler}>x</button>
         </li>
-
     })
     //event subscribers
-    const onAddPostClickHandler = () => {
-        if (newTaskTitle.trim() !== '') {
-            addTasks(newTaskTitle.trim(), id)
-            setNewTaskTitle('')
-        } else {
-            setError('Title is required')
-        }
-
-    }
-    const onInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewTaskTitle(e.currentTarget.value)
-    }
-    const onEnterKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
-        if (e.key === 'Enter') {
-            onAddPostClickHandler();
-        }
-    }
     const removeTodoLIst = () => {
         removeTodoList(id)
     }
-
     return <div>
         <h3 className={'title'}>{title}</h3>
         <button onClick={removeTodoLIst}>x</button>
         <div>
-            <input
-                type="text"
-                value={newTaskTitle}
-                onKeyPress={(e) => {
-                    onEnterKeyPressHandler(e)
-                }}
-                onChange={(e) => {
-                    onInputChangeHandler(e)
-                }}
-                className={error ? 'error' : ''}
-            />
-            <button onClick={onAddPostClickHandler}>+</button>
-            {error && <div className='error-message'>{error}</div>}
+            <AddItemInput addTasks={onAddTaskButtonClick}/>
         </div>
 
         <ul>
