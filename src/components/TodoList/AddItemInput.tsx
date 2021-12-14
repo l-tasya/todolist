@@ -1,5 +1,6 @@
 import React, {ChangeEvent, useState} from 'react';
 import {ErrorType} from './TodoList';
+import s from './Todolist.module.scss'
 
 type AddItemInputPropsType = {
     addTasks: (newTitle: string) => void
@@ -38,9 +39,9 @@ export const AddItemInput: React.FC<AddItemInputPropsType> = (props) => {
             onChange={(e) => {
                 onInputChangeHandler(e)
             }}
-            className={error ? 'error' : ''}
+            className={error ? s.error : ''}
         />
         <button onClick={onAddPostClickHandler}>+</button>
-        {error && <div className='error-message'>{error}</div>}
+        {error && <div className={s.todoList__errorMessage}>{error}</div>}
     </div>
 }
