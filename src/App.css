@@ -1,6 +1,10 @@
 .app{
     padding:30px;
     display:flex;
+
+}
+body{
+    background: azure;
 }
 .app > div{
     margin-right: 50px;

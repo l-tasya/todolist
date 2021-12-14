@@ -1,0 +1,119 @@
+%removeButton {
+    background: none;
+    border: none;
+    color: coral;
+    font-weight: 700;
+    font-size: 30px;
+    &:hover{color:red}
+}
+%disableCopy{
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.todoList{
+    display:flex;
+    flex-direction: column;
+    min-width: 200px;
+    border: 3px solid white;
+    border-radius: 20px;
+    box-shadow: 3px 3px 6px aquamarine;
+    padding: 15px;
+    background: white;
+
+    &__title{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 25px;
+        font-weight: 700;
+        color: aquamarine;
+        text-align: center;
+        width: 100%;
+        button{
+            @extend %removeButton
+        }
+    }
+    &__addTasks{
+        margin: 0 15px;
+        font-size: 30px;
+        font-weight: 700;
+        width: 100%;
+
+
+
+        input{
+            border: 1px solid aquamarine;
+            width: 80%
+        }
+        button{
+            width: 10%;
+            display: inline-block;
+            border: none;
+            background: none;
+            color: aquamarine;
+            margin-left: 5px;
+            height: 20px;
+            font-size: 15px;
+            font-weight: 700;
+            position:relative;
+            top: 2px
+        }
+    }
+    &__tasks{
+        font-weight: 700;
+        font-size: 20px;
+        flex: 1 0 auto;
+        li{
+            flex: 1 1 auto;
+            font-weight: 700;
+            font-size: 20px;
+
+        }
+        button{
+            @extend %removeButton;
+            font-size: 20px;
+        }
+    }
+    &__filterButton{
+        border: 0;
+        border-radius: 15px;
+        padding: 10px;
+        color: lavender;
+        background: darkcyan;
+        min-width: 100px;
+        font-weight: 700;
+        margin: 0 5px;
+        &:hover{
+            opacity: 0.5;
+            color: aqua;
+        }
+    }
+    &__filters{
+        display: flex;
+        justify-content: space-around;
+    }
+
+    &__error{
+        border: 1px solid rosybrown;
+
+    }
+    &__errorMessage{
+        color: red;
+        font-size: 13px;
+    }
+    &__activeFilter{
+        color: white;
+        background: lightcoral;
+        &:hover{
+            opacity: 0.5;
+            color: aqua;
+        }
+    }
+    &__isDone{
+        opacity: 0.5;
+    }
+}
