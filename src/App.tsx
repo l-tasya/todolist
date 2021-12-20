@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {TodoList} from './components/TodoList/TodoList';
 import {v1} from 'uuid';
@@ -21,14 +21,16 @@ export type TasksType = {
 }
 
 function App() {
+    /*------local state level------*/
     let todoListID1 = v1();
     let todoListID2 = v1();
     let [todoLists, setTodoLists] = useState<Array<TodoListType>>([
         {id: todoListID1, title: 'What to learn', filter: 'all'},
         {id: todoListID2, title: 'Sunday tasks', filter: 'all'},
     ])
+
     let [tasks, setTasks] = useState<TasksType>({
-        [todoListID1]: [
+        [todoLists[0].id]: [
             {id: v1(), taskTitle: 'reactSN', isDone: true},
             {id: v1(), taskTitle: 'Kabzda', isDone: false},
             {id: v1(), taskTitle: 'Code Wars', isDone: true},
@@ -37,7 +39,7 @@ function App() {
             {id: v1(), taskTitle: 'Counter', isDone: false},
             {id: v1(), taskTitle: 'Local Storage', isDone: false},
         ],
-        [todoListID2]: [
+        [todoLists[1].id]: [
             {id: v1(), taskTitle: 'Iron a Shirt', isDone: false},
             {id: v1(), taskTitle: 'Collect the bag', isDone: false},
             {id: v1(), taskTitle: 'Prepare clothes for next day', isDone: false},
@@ -46,6 +48,39 @@ function App() {
             {id: v1(), taskTitle: 'set alarm', isDone: false},
         ]
     })
+    /*------local state level------*/
+    /**/
+    useEffect(()=>{
+        getTodoListsFromLocalStorage()
+        getTasksFromLocalStorage()
+    }, [])
+    const getTodoListsFromLocalStorage = ()=>{
+        let newValue = localStorage.getItem('todoLists')
+
+        if( newValue ){
+            setTodoLists(JSON.parse(newValue))
+        }
+    }
+    const getTasksFromLocalStorage = () =>{
+        let newValue = localStorage.getItem('todoListsTasks')
+
+        if( newValue ){
+            setTasks(JSON.parse(newValue))
+        }
+    }
+
+    useEffect(()=>{
+        localStorage.setItem('todoLists', JSON.stringify(todoLists))
+
+    }, [todoLists])
+    useEffect(()=>{
+        localStorage.setItem('todoListsTasks', JSON.stringify(tasks))
+    }, [tasks])
+    /**/
+
+
+
+    /*------ callbacks ------*/
     const changeFilter = (filterNew: FilterType, todoListID: string) => {
         let curr = todoLists.find(t => t.id === todoListID);
         if (curr) {
@@ -94,6 +129,8 @@ function App() {
         setTodoLists([temp, ...todoLists])
         setTasks({...tasks, [temp.id]:[]})
     }
+    /*------ callbacks ------*/
+
     return (
         <div className='app'>
             <AddItemInput addTasks={addTodoList}/>
