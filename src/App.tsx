@@ -24,7 +24,7 @@ function App() {
     let todoListID1 = v1();
     let todoListID2 = v1();
     let [todoLists, setTodoLists] = useState<Array<TodoListType>>([
-        {id: todoListID1, title: 'What to learn', filter: 'active'},
+        {id: todoListID1, title: 'What to learn', filter: 'all'},
         {id: todoListID2, title: 'Sunday tasks', filter: 'all'},
     ])
     let [tasks, setTasks] = useState<TasksType>({
@@ -34,13 +34,16 @@ function App() {
             {id: v1(), taskTitle: 'Code Wars', isDone: true},
             {id: v1(), taskTitle: 'Todo List', isDone: true},
             {id: v1(), taskTitle: 'Home Work', isDone: false},
-            {id: v1(), taskTitle: 'GYM', isDone: false},
+            {id: v1(), taskTitle: 'Counter', isDone: false},
+            {id: v1(), taskTitle: 'Local Storage', isDone: false},
         ],
         [todoListID2]: [
             {id: v1(), taskTitle: 'Iron a Shirt', isDone: false},
             {id: v1(), taskTitle: 'Collect the bag', isDone: false},
             {id: v1(), taskTitle: 'Prepare clothes for next day', isDone: false},
-            {id: v1(), taskTitle: 't', isDone: false},
+            {id: v1(), taskTitle: 'Contain dinner for the next day', isDone: false},
+            {id: v1(), taskTitle: 'do homework', isDone: false},
+            {id: v1(), taskTitle: 'set alarm', isDone: false},
         ]
     })
     const changeFilter = (filterNew: FilterType, todoListID: string) => {
