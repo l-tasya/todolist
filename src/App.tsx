@@ -19,7 +19,6 @@ export type TaskItemType = {
 export type TasksType = {
     [key: string]: Array<TaskItemType>
 }
-
 function App() {
     /*------local state level------*/
     let todoListID1 = v1();
@@ -50,34 +49,33 @@ function App() {
     })
     /*------local state level------*/
     /**/
-    useEffect(()=>{
+    useEffect(() => {
         getTodoListsFromLocalStorage()
         getTasksFromLocalStorage()
     }, [])
-    const getTodoListsFromLocalStorage = ()=>{
+    const getTodoListsFromLocalStorage = () => {
         let newValue = localStorage.getItem('todoLists')
 
-        if( newValue ){
+        if (newValue) {
             setTodoLists(JSON.parse(newValue))
         }
     }
-    const getTasksFromLocalStorage = () =>{
+    const getTasksFromLocalStorage = () => {
         let newValue = localStorage.getItem('todoListsTasks')
 
-        if( newValue ){
+        if (newValue) {
             setTasks(JSON.parse(newValue))
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         localStorage.setItem('todoLists', JSON.stringify(todoLists))
 
     }, [todoLists])
-    useEffect(()=>{
+    useEffect(() => {
         localStorage.setItem('todoListsTasks', JSON.stringify(tasks))
     }, [tasks])
     /**/
-
 
 
     /*------ callbacks ------*/
@@ -89,14 +87,17 @@ function App() {
         setTodoLists([...todoLists])
 
     }
+
     const changeTaskCheckbox = (taskID: string, changedValue: boolean, todoListsID: string) => {
         let task = tasks[todoListsID].find(t => t.id === taskID);
-        if (task) {task.isDone = changedValue}
+        if (task) {
+            task.isDone = changedValue
+        }
         setTasks({...tasks})
     }
-    const changeTaskTitle = (taskID: string, changedValue: string, todoListsID: string) =>{
-        let task = tasks[todoListsID].find(t=>t.id === taskID)
-        if(task){
+    const changeTaskTitle = (taskID: string, changedValue: string, todoListsID: string) => {
+        let task = tasks[todoListsID].find(t => t.id === taskID)
+        if (task) {
             task.taskTitle = `${changedValue}`
             task.isDone = false
         }
@@ -111,9 +112,12 @@ function App() {
         tasks[todoListID] = [newTask, ...tasks[todoListID]]
         setTasks({...tasks})
     }
-    const changeTodoListTitle = (newTitle: string, todoListsID: string) =>{
-        let todoList = todoLists.find( t=> t.id === todoListsID)
-        if(todoList){todoList.title = `${newTitle}`}
+
+    const changeTodoListTitle = (newTitle: string, todoListsID: string) => {
+        let todoList = todoLists.find(t => t.id === todoListsID)
+        if (todoList) {
+            todoList.title = `${newTitle}`
+        }
         setTodoLists([...todoLists])
     }
     const removeTodoList = (todoListID: string) => {
@@ -127,7 +131,7 @@ function App() {
             title: title
         }
         setTodoLists([temp, ...todoLists])
-        setTasks({...tasks, [temp.id]:[]})
+        setTasks({...tasks, [temp.id]: []})
     }
     /*------ callbacks ------*/
 
