@@ -21,11 +21,9 @@ export type TasksType = {
 }
 function App() {
     /*------local state level------*/
-    let todoListID1 = v1();
-    let todoListID2 = v1();
     let [todoLists, setTodoLists] = useState<Array<TodoListType>>([
-        {id: todoListID1, title: 'What to learn', filter: 'all'},
-        {id: todoListID2, title: 'Sunday tasks', filter: 'all'},
+        {id: v1(), title: 'What to learn', filter: 'all'},
+        {id: v1(), title: 'Sunday tasks', filter: 'all'},
     ])
 
     let [tasks, setTasks] = useState<TasksType>({
@@ -48,6 +46,8 @@ function App() {
         ]
     })
     /*------local state level------*/
+
+
     /**/
     useEffect(() => {
         getTodoListsFromLocalStorage()
@@ -87,7 +87,6 @@ function App() {
         setTodoLists([...todoLists])
 
     }
-
     const changeTaskCheckbox = (taskID: string, changedValue: boolean, todoListsID: string) => {
         let task = tasks[todoListsID].find(t => t.id === taskID);
         if (task) {

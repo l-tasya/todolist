@@ -29,6 +29,7 @@ export const TodoList: React.FC<TodoListPropsType> = (props) => {
         props.removeTodoList(props.id)
     }
     const changeTodoListTitle = (title: string)=>props.changeTodoListTitle(title, props.id)
+
     let liElements = props.tasks.map(t => {
         const removeTask = () => props.removeTasks(t.id, props.id);
         const changeTaskCheckbox = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskCheckbox(t.id, e.currentTarget.checked, props.id)
