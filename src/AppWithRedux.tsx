@@ -31,8 +31,8 @@ export type TasksType = {
 
 function AppWithRedux() {
     const dispatch = useDispatch()
-    let todoLists = useSelector<AppStateType, TodoListType[]>((state)=>state.todoList)
-    let tasks = useSelector<AppStateType, TasksType>((state)=>state.tasks)
+    let todoLists = useSelector<AppStateType, TodoListType[]>((state) => state.todoList)
+    let tasks = useSelector<AppStateType, TasksType>((state) => state.tasks)
     /*------local state level------*/
 
 
@@ -68,7 +68,7 @@ function AppWithRedux() {
 
     /*------ callbacks ------*/
     const changeFilter = (filterNew: FilterType, todoListID: string) => {
-        dispatch(changeTodoListFilterAC(filterNew,todoListID))
+        dispatch(changeTodoListFilterAC(filterNew, todoListID))
     }
     const changeTodoListTitle = (newTitle: string, todoListsID: string) => {
         dispatch(changeTodoListTitleAC(newTitle, todoListsID))
