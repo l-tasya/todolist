@@ -1,24 +1,15 @@
-import React, {useEffect, useReducer} from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {TodoList} from './components/TodoList/TodoList';
-import {v1} from 'uuid';
 import {AddItemInput} from './components/TodoList/AddItemInput';
 import {
     addTodoListAC,
     changeTodoListFilterAC,
     changeTodoListTitleAC,
     removeTodoListAC,
-    setTodoListAC,
-    todolistReducer
+    setTodoListAC
 } from "./state/todolistReducer";
-import {
-    addTaskAC,
-    changeTaskCheckboxAC,
-    changeTaskTitleAC,
-    removeTaskAC,
-    setTasksAC,
-    tasksReducer
-} from "./state/tasksReducer";
+import {setTasksAC} from "./state/tasksReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "./redux/store";
 
@@ -79,19 +70,6 @@ function AppWithRedux() {
     const changeFilter = (filterNew: FilterType, todoListID: string) => {
         dispatch(changeTodoListFilterAC(filterNew,todoListID))
     }
-    const changeTaskCheckbox = (taskID: string, changedValue: boolean, todoListsID: string) => {
-        dispatch(changeTaskCheckboxAC(taskID, changedValue, todoListsID))
-    }
-    const changeTaskTitle = (taskID: string, changedValue: string, todoListsID: string) => {
-        dispatch(changeTaskTitleAC(taskID, changedValue, todoListsID))
-    }
-    const removeTask = (taskID: string, todoListID: string) => {
-        dispatch(removeTaskAC(taskID, todoListID))
-    }
-    const addTasks = (newTaskTitle: string, todoListID: string) => {
-        dispatch(addTaskAC(newTaskTitle, todoListID))
-    }
-
     const changeTodoListTitle = (newTitle: string, todoListsID: string) => {
         dispatch(changeTodoListTitleAC(newTitle, todoListsID))
     }
