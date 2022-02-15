@@ -2,10 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import AppWithReducer from './AppWithReducer';
+import {Provider} from "react-redux";
+import {store} from "./redux/store";
+import AppWithRedux from "./AppWithRedux";
 
 ReactDOM.render(
-    <AppWithReducer/>,
+    <Provider store={store}>
+        <AppWithRedux/>
+    </Provider>
+    ,
     document.getElementById('root')
 );
 

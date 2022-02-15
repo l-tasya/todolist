@@ -1,8 +1,11 @@
 import React, {ChangeEvent} from 'react';
-import {FilterType, TaskItemType} from '../../App';
 import s from './Todolist.module.scss'
 import {AddItemInput} from './AddItemInput';
 import {EditableSpan} from './EditableSpan';
+import {AppStateType} from "../../redux/store";
+import {useDispatch, useSelector} from "react-redux";
+import {addTaskAC, changeTaskCheckboxAC, changeTaskTitleAC, removeTaskAC} from "../../state/tasksReducer";
+import { FilterType, TaskItemType } from '../../AppWithRedux';
 
 //types
 export type ErrorType = null | string
@@ -10,30 +13,34 @@ type TodoListPropsType = {
     title: string
     filter: FilterType;
     id: string
-    tasks: Array<TaskItemType>
-    removeTasks: (taskID: string, todoListID: string) => void
-    addTasks: (newTaskTitle: string, todoListID: string) => void
     changeFilter: (filterNew: FilterType, todoListID: string) => void
-    changeTaskCheckbox: (taskID: string, changedValue: boolean, todoListsID: string) => void
     removeTodoList: (todoListID: string) => void
-    changeTaskTitle: (taskID: string, changedValue: string, todoListsID: string) => void
     changeTodoListTitle: (newTitle: string, todoListsID: string) => void
 }
 
 
 export const TodoList: React.FC<TodoListPropsType> = (props) => {
+    const currTask = useSelector<AppStateType, Array<TaskItemType>>((state) => state.tasks[props.id]);
+    let tasks: Array<TaskItemType> = currTask;
+    if (props.filter === 'active') {
+        tasks = tasks.filter(t => !t.isDone);
+    }
+    if (props.filter === 'completed') {
+        tasks = tasks.filter(t => t.isDone);
+    }
+    const dispatch = useDispatch()
     const addTask = (title: string) => {
-        return props.addTasks(title, props.id);
+        return dispatch(addTaskAC( title, props.id));
     }
     const removeTodoLIst = () => {
         props.removeTodoList(props.id)
     }
     const changeTodoListTitle = (title: string)=>props.changeTodoListTitle(title, props.id)
 
-    let liElements = props.tasks.map(t => {
-        const removeTask = () => props.removeTasks(t.id, props.id);
-        const changeTaskCheckbox = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskCheckbox(t.id, e.currentTarget.checked, props.id)
-        const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id,title,props.id)
+    let liElements = tasks.map(t => {
+        const removeTask = () => dispatch(removeTaskAC(t.id, props.id));
+        const changeTaskCheckbox = (e: ChangeEvent<HTMLInputElement>) => dispatch(changeTaskCheckboxAC(t.id, e.currentTarget.checked, props.id))
+        const changeTaskTitle = (title: string) => dispatch(changeTaskTitleAC(t.id,title,props.id))
         return <li className={t.isDone ? s.todoList__isDone : ''} key={t.id}>
             <input
                 type="checkbox"

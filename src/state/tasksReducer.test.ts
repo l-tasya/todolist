@@ -1,7 +1,7 @@
 import {v1} from 'uuid';
 import {TasksType, TodoListType} from '../App';
-import {AddTaskAC, ChangeTaskCheckboxAC, ChangeTaskTitleAC, RemoveTaskAC, tasksReducer} from './tasksReducer';
-import {AddTodoListAC, RemoveTodoListAC} from "./todolistReducer";
+import {addTaskAC, changeTaskCheckboxAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasksReducer';
+import {addTodoListAC, removeTodoListAC} from "./todolistReducer";
 
 test('tasks reducer should remove correct task', ()=>{
     let todoListID1 = v1();
@@ -31,7 +31,7 @@ test('tasks reducer should remove correct task', ()=>{
     }
     let removeTodoListID = todoListID1
     let removeTaskID = startState[removeTodoListID][3].id
-    const endState = tasksReducer(startState, RemoveTaskAC(removeTaskID, removeTodoListID))
+    const endState = tasksReducer(startState, removeTaskAC(removeTaskID, removeTodoListID))
     expect(endState[todoListID1].length).toBe(6)
     expect(endState[todoListID1][3].taskTitle).toBe('Home Work')
 })
@@ -63,7 +63,7 @@ test('task reducer should add task for correct todolist', ()=>{
     }
     let newTaskTitle = 'New task'
     let todoListID = todoListID1
-    const endState = tasksReducer(startState, AddTaskAC(newTaskTitle, todoListID))
+    const endState = tasksReducer(startState, addTaskAC(newTaskTitle, todoListID))
     expect(endState[todoListID].length).toBe(8)
     expect(endState[todoListID][0].taskTitle).toBe(newTaskTitle)
 
@@ -98,7 +98,7 @@ test('task reducer should change task checkbox for correct todoList',()=>{
     let todoListID = todoListID1
     let taskID = startState[todoListID1][3].id
     let changedValue = !startState[todoListID1][3].isDone
-    let endState = tasksReducer(startState, ChangeTaskCheckboxAC(taskID,changedValue,todoListID))
+    let endState = tasksReducer(startState, changeTaskCheckboxAC(taskID,changedValue,todoListID))
     expect(endState[todoListID1][3].isDone).toBe(changedValue)
 })
 test('task reducer should change task title for correct todoList', ()=>{
@@ -131,7 +131,7 @@ test('task reducer should change task title for correct todoList', ()=>{
     let taskID = startState[todoListID1][3].id
     let newTitle = 'new Title'
 
-    const endState = tasksReducer(startState, ChangeTaskTitleAC(taskID, newTitle,todoListID))
+    const endState = tasksReducer(startState, changeTaskTitleAC(taskID, newTitle,todoListID))
     expect(endState[todoListID1][3].taskTitle).toBe(newTitle)
 })
 test('new array of the tasks should be added when todolist is added', ()=> {
@@ -148,7 +148,7 @@ test('new array of the tasks should be added when todolist is added', ()=> {
             {id: v1(), taskTitle: 'b', isDone: false},
         ],
     }
-    const action = AddTodoListAC('title no matter')
+    const action = addTodoListAC('title no matter')
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState)
@@ -173,7 +173,7 @@ test('array of the tasks should be removed when todolist is removed', ()=> {
             {id: v1(), taskTitle: 'b', isDone: false},
         ],
     }
-    const action = RemoveTodoListAC("todoLists2")
+    const action = removeTodoListAC("todoLists2")
     const endState = tasksReducer(startState, action)
 
     let keys = Object.keys(endState)
