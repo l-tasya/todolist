@@ -6,12 +6,14 @@ type ActionsType = ReturnType<typeof RemoveTodoListAC>
     | ReturnType<typeof AddTodoListAC>
     | ReturnType<typeof ChangeTodoListTitleAC>
     | ReturnType<typeof ChangeTodoListFilterAC>
+    | ReturnType<typeof SetTodoListAC>
 
 export const todolistReducer = (state: Array<TodoListType>, action: ActionsType): Array<TodoListType> => {
     switch (action.type) {
         case 'REMOVE-TODOLIST':{
             const stateCopy = [...state]
             return stateCopy.filter(t=>t.id !== action.removeId)
+
         }
         case 'ADD-TODOLIST':{
             const stateCopy = [...state]
@@ -38,9 +40,11 @@ export const todolistReducer = (state: Array<TodoListType>, action: ActionsType)
             }
             return stateCopy
         }
-
+        case 'SET-TODOLIST':{
+            return [...action.newValues]
+        }
         default:
-            throw new Error('I don\'t understand this action type')
+            return [...state]
     }
 
 }
@@ -69,5 +73,11 @@ export let ChangeTodoListFilterAC = (newFilter: FilterType, id: string) =>{
         type: 'CHANGE-TODOLIST-FILTER',
         newFilter,
         id,
+    } as const
+}
+export let SetTodoListAC = (newValues: TodoListType[]) =>{
+    return{
+        type: 'SET-TODOLIST',
+        newValues,
     } as const
 }

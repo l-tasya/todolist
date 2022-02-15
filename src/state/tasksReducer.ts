@@ -9,6 +9,7 @@ type ActionsType = ReturnType<typeof RemoveTaskAC>
     | ReturnType<typeof ChangeTaskTitleAC>
     | ReturnType<typeof AddTodoListAC>
     | ReturnType<typeof RemoveTodoListAC>
+    | ReturnType<typeof SetTasksAC>
 
 export const tasksReducer = (state: TasksType, action: ActionsType): TasksType => {
     switch (action.type) {
@@ -55,8 +56,13 @@ export const tasksReducer = (state: TasksType, action: ActionsType): TasksType =
             }
             return stateCopy
         }
+        case "SET-TASKS":{
+            return {
+                ...action.newValues
+            }
+        }
         default:
-            throw new Error('I don\'t understand this action type')
+            return {...state}
     }
 }
 
@@ -88,5 +94,11 @@ export let ChangeTaskTitleAC = (taskID: string, changedValue: string, todoListID
         taskID,
         changedValue,
         todoListID,
+    } as const
+}
+export let SetTasksAC = (newValues: TasksType) => {
+    return {
+        type: 'SET-TASKS',
+        newValues,
     } as const
 }
