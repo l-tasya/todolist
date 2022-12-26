@@ -63,7 +63,7 @@ export const App = () => {
     }
     const changeCheckBox = (todoListID: string, taskID: string, newValue: boolean) =>{
         let items = tasks[todoListID]
-        let task = items.find(t=>t.id == taskID)
+        let task = items.find(t=>t.id === taskID)
         if(task){
             task.isDone = newValue
         }
