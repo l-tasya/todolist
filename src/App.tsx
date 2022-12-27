@@ -1,9 +1,23 @@
 import React from "react";
 import {TodoList} from "./components/TodoList/TodoList";
-import {AllTasksType, changeCheckBoxAC, removeTaskAC} from "./redux/reducers/tasksReducer";
-import {FilterType, removeTodoListAC, setFilterAC, TodoListsType} from "./redux/reducers/todoListReducer";
+import {
+    addTaskAC,
+    AllTasksType,
+    changeCheckBoxAC,
+    changeTaskTitleAC,
+    removeTaskAC
+} from "./redux/reducers/tasksReducer";
+import {
+    addTodoListAC,
+    changeTodoListTitleAC,
+    FilterType,
+    removeTodoListAC,
+    setFilterAC,
+    TodoListsType
+} from "./redux/reducers/todoListReducer";
 import {AppStateType} from "./redux/store/store";
 import {useDispatch, useSelector} from "react-redux";
+import {AddItem} from "./common/components/AddItem/AddItem";
 
 
 export const App = () => {
@@ -23,9 +37,21 @@ export const App = () => {
     const changeCheckBox = (todoListID: string, taskID: string, newValue: boolean) => {
         dispatch(changeCheckBoxAC(todoListID, taskID, newValue))
     }
-
+    const changeTodoListTitle = (todoListID: string, newTitle: string) =>{
+        dispatch(changeTodoListTitleAC(todoListID, newTitle))
+    }
+    const changeTaskTitle = (todoListID: string,taskID: string, newTitle: string) =>{
+        dispatch(changeTaskTitleAC(todoListID,taskID, newTitle))
+    }
+    const addTask = (todoListID: string, newValue: string) =>{
+        dispatch(addTaskAC(todoListID, newValue))
+    }
+    const addTodoList = (newValue: string) =>{
+        dispatch(addTodoListAC(newValue))
+    }
 
     return <div>
+        <AddItem addItem={addTodoList}/>
         {
             todoLists.map(t => {
                 let resultTasks = tasks[t.id];
@@ -44,6 +70,9 @@ export const App = () => {
                     removeTask={removeTask}
                     removeTodoList={removeTodoList}
                     changeCheckBox={changeCheckBox}
+                    changeTodoListTitle={changeTodoListTitle}
+                    changeTaskTitle={changeTaskTitle}
+                    addTask={addTask}
                 />
             })
         }
