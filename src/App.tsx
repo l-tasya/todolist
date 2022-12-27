@@ -20,7 +20,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {AddItem} from "./common/components/AddItem/AddItem";
 
 
-export const App = () => {
+export const App = React.memo(() => {
+    console.log('App is called')
     //TODO: stylize all appk
     const tasks = useSelector<AppStateType, AllTasksType>(t => t.tasks)
     const todoLists = useSelector<AppStateType, TodoListsType>(t => t.todoList)
@@ -78,4 +79,4 @@ export const App = () => {
             })
         }
     </div>
-}
+})
