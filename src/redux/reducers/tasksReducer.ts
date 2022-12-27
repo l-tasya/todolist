@@ -1,6 +1,15 @@
-import {AllTasksType, todoList1, todoList2} from "../../App";
 import {v1} from "uuid";
-
+import { todoList1, todoList2 } from "./todoListReducer";
+//tasks
+export type TaskType = {
+    id: string
+    title: string
+    isDone: boolean
+}
+export type TasksType = TaskType[]
+export type AllTasksType = {
+    [key: string]: TasksType,
+}
 
 type StateType = AllTasksType
 
