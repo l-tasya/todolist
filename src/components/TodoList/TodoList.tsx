@@ -16,7 +16,7 @@ type TodoListPropsType = {
     changeCheckBox: (todoListID: string, taskID: string, newValue: boolean) => void
     changeTodoListTitle: (todoListID: string, newTitle: string) => void
     changeTaskTitle: (todoListID: string, taskID: string, newTitle: string) => void
-    addTask:(todoListID: string, newValue: string) =>void
+    addTask: (todoListID: string, newValue: string) => void
 }
 const Task = styled.div`
     display: flex;
