@@ -17,10 +17,29 @@ const initialState: StateType = [
     {id: todoList2, title: "What to Play", filter: "Completed"},
 ]
 
-export const todoListReducer = (state: StateType = initialState, action: any):StateType =>{
-    switch(action){
-        default:{
+export const todoListReducer = (state: StateType = initialState, action: ActionsType): StateType => {
+    switch (action.type) {
+        case "CHANGE-FILTER":{
+            const stateCopy = [...state]
+            const todoList = stateCopy.find(t=>t.id === action.todoListID)
+            if(todoList){
+                todoList.filter = action.newValue
+            }
+            return stateCopy
+        }
+        default: {
             return state
         }
     }
 }
+
+type ActionsType = ReturnType<typeof changeFilterAC>
+export const changeFilterAC = (todoListID: string, newValue: FilterType) =>{
+    return {
+        type: 'CHANGE-FILTER',
+        todoListID,
+        newValue,
+    } as const
+}
+
+
