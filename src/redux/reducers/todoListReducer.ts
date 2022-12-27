@@ -1,6 +1,13 @@
 import {todoList1, todoList2, TodoListsType} from "../../App";
 
-
+export type FilterType = "All" | "Completed" | "Active"
+export type TodoListType = {
+    id: string
+    title: string
+    filter: FilterType
+}
+export type TodoListsType = TodoListType[]
+export type TodoListsStateType = TodoListsType
 type StateType = TodoListsType
 
 const initialState: StateType = [
