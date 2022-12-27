@@ -1,7 +1,7 @@
 import React from "react";
 import {TodoList} from "./components/TodoList/TodoList";
-import {AllTasksType} from "./redux/reducers/tasksReducer";
-import {changeFilterAC, FilterType, TodoListsType} from "./redux/reducers/todoListReducer";
+import {AllTasksType, changeCheckBoxAC, removeTaskAC} from "./redux/reducers/tasksReducer";
+import {setFilterAC, FilterType, removeTodoListAC, TodoListsType} from "./redux/reducers/todoListReducer";
 import {AppStateType} from "./redux/store/store";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -17,25 +17,17 @@ export const App = () => {
     // ])
     // //callbacks
     const setFilter = (todoListID: string, newValue: FilterType) => {
-        dispatch(changeFilterAC(todoListID, newValue))
+        dispatch(setFilterAC(todoListID, newValue))
     }
-    // const removeTask = (todoListID: string, taskID: string) =>{
-    //     tasks[todoListID] = tasks[todoListID].filter(t=>t.id !==taskID)
-    //     setTasks({...tasks})
-    // }
-    // const removeTodoList = (todoListID: string) =>{
-    //     let todoList = todoLists.filter(t=>t.id !== todoListID)
-    //     delete tasks[todoListID]
-    //     setTodoLists([...todoList])
-    // }
-    // const changeCheckBox = (todoListID: string, taskID: string, newValue: boolean) =>{
-    //     let items = tasks[todoListID]
-    //     let task = items.find(t=>t.id === taskID)
-    //     if(task){
-    //         task.isDone = newValue
-    //     }
-    //     setTasks({...tasks})
-    // }
+    const removeTask = (todoListID: string, taskID: string) => {
+        dispatch(removeTaskAC(todoListID, taskID))
+    }
+    const removeTodoList = (todoListID: string) => {
+        dispatch(removeTodoListAC(todoListID))
+    }
+    const changeCheckBox = (todoListID: string, taskID: string, newValue: boolean) => {
+        dispatch(changeCheckBoxAC(todoListID, taskID, newValue))
+    }
     //
     //
     //
@@ -57,12 +49,9 @@ export const App = () => {
                     title={t.title}
                     tasks={resultTasks}
                     setFilter={setFilter}
-                    removeTask={() => {
-                    }}
-                    removeTodoList={() => {
-                    }}
-                    changeCheckBox={() => {
-                    }}
+                    removeTask={removeTask}
+                    removeTodoList={removeTodoList}
+                    changeCheckBox={changeCheckBox}
                 />
             })
         }

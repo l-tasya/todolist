@@ -19,7 +19,7 @@ const initialState: StateType = [
 
 export const todoListReducer = (state: StateType = initialState, action: ActionsType): StateType => {
     switch (action.type) {
-        case "CHANGE-FILTER":{
+        case "SET-FILTER":{
             const stateCopy = [...state]
             const todoList = stateCopy.find(t=>t.id === action.todoListID)
             if(todoList){
@@ -27,19 +27,31 @@ export const todoListReducer = (state: StateType = initialState, action: Actions
             }
             return stateCopy
         }
+        case "REMOVE-TODOLIST":{
+            let stateCopy = [...state]
+            return stateCopy.filter(t=> t.id !== action.todoListID)
+        }
+
         default: {
             return state
         }
     }
 }
 
-type ActionsType = ReturnType<typeof changeFilterAC>
-export const changeFilterAC = (todoListID: string, newValue: FilterType) =>{
+type ActionsType = ReturnType<typeof setFilterAC>
+    |ReturnType<typeof removeTodoListAC>
+
+export const setFilterAC = (todoListID: string, newValue: FilterType) =>{
     return {
-        type: 'CHANGE-FILTER',
+        type: 'SET-FILTER',
         todoListID,
         newValue,
     } as const
 }
-
+export const removeTodoListAC = (todoListID: string) =>{
+    return {
+        type: 'REMOVE-TODOLIST',
+        todoListID,
+    } as const
+}
 

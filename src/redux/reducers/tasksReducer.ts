@@ -11,7 +11,8 @@ export type AllTasksType = {
     [key: string]: TasksType,
 }
 
-type StateType = AllTasksType
+export type TasksStateType = AllTasksType
+type StateType = TasksStateType
 
 const initialState: StateType = {
     [todoList1]: [
@@ -28,10 +29,42 @@ const initialState: StateType = {
     ]
 }
 
-export const tasksReducer = (state: StateType = initialState, action: any): StateType => {
-    switch (action) {
+export const tasksReducer = (state: StateType = initialState, action: ActionsType): StateType => {
+    switch (action.type) {
+        case "REMOVE-TASK":{
+            const stateCopy = {...state}
+            stateCopy[action.todoListID] = stateCopy[action.todoListID].filter(t=>t.id !== action.taskID)
+            return stateCopy
+        }
+        case "CHANGE-CHECKBOX":{
+            const stateCopy = {...state}
+            let task = stateCopy[action.todoListID].find(t=>t.id === action.taskID)
+            if(task){
+                task.isDone = action.newValue
+            }
+            return stateCopy
+        }
         default: {
             return state
         }
     }
+}
+
+type ActionsType = ReturnType<typeof removeTaskAC>
+|ReturnType<typeof changeCheckBoxAC>
+
+export const removeTaskAC = (todoListID: string, taskID: string) =>{
+    return {
+        type: 'REMOVE-TASK',
+        todoListID,
+        taskID
+    } as const
+}
+export const changeCheckBoxAC = (todoListID: string, taskID: string, newValue: boolean) =>{
+    return {
+        type: 'CHANGE-CHECKBOX',
+        todoListID,
+        taskID,
+        newValue
+    } as const
 }
