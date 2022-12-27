@@ -52,6 +52,8 @@ export const todoListReducer = (state: StateType = initialState, action: Actions
 
 type ActionsType = ReturnType<typeof setFilterAC>
     |ReturnType<typeof removeTodoListAC>
+    |ReturnType<typeof addTodoListAC>
+    |ReturnType<typeof changeTodoListTitleAC>
 
 export const setFilterAC = (todoListID: string, newValue: FilterType) =>{
     return {
