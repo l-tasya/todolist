@@ -18,28 +18,36 @@ type TodoListPropsType = {
     changeTaskTitle: (todoListID: string, taskID: string, newTitle: string) => void
     addTask: (todoListID: string, newValue: string) => void
 }
-const Task = styled.div`
-    display: flex;
-`
-const Title = styled(Task)``
-export const TodoList: React.FC<TodoListPropsType> = React.memo(({
-                                                                     title,
-                                                                     tasks,
-                                                                     setFilter,
-                                                                     id,
-                                                                     removeTask,
-                                                                     removeTodoList,
-                                                                     changeCheckBox,
-                                                                     changeTodoListTitle,
-                                                                     changeTaskTitle,
-                                                                     addTask,
-                                                                 }) => {
-        const addItem = (title: string)=>addTask(id, title)
-        return <div>
-            <Title><EditableSpan c1={(title: string) =>changeTodoListTitle(id, title)} title={title}/>
-                <button onClick={() => removeTodoList(id)}>x</button>
-            </Title>
-            <AddItem addItem={addItem}/>
+export const TodoList: React.FC<TodoListPropsType> = React.memo(({title, filter, setFilter, tasks, id, removeTask, removeTodoList, changeCheckBox, changeTodoListTitle, changeTaskTitle, addTask,}) => {
+        const addTaskCallback = useCallback((title: string) => {
+            addTask(id, title)
+        }, [id, addTask])
+
+        const changeTodoListTitleCallback = useCallback((title: string) => {
+            changeTodoListTitle(id, title)
+        }, [changeTodoListTitle, id])
+
+        const removeTodoListCallback = useCallback(() => {
+            removeTodoList(id)
+        }, [id, removeTodoList])
+        //filter
+        let resultTasks = tasks;
+        if (filter === "Active") {
+            resultTasks = tasks.filter(t => !t.isDone)
+        }
+        if (filter === "Completed") {
+            resultTasks = tasks.filter(t => t.isDone)
+        }
+
+
+        const filterAll = useCallback(() => setFilter(id, "All"), [setFilter, id])
+        const filterActive = useCallback(() => setFilter(id, "Active"), [setFilter, id])
+        const filterCompleted = useCallback(() => setFilter(id, "Completed"), [setFilter, id])
+        return <>
+            <div><EditableSpan c1={changeTodoListTitleCallback} title={title}/>
+                <button onClick={removeTodoListCallback}>x</button>
+            </div>
+            <AddItem addItem={addTaskCallback}/>
             <ul>
                 {
                     tasks.map(t => <Task key={t.id}><input type="checkbox"
