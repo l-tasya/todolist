@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {changeCheckBoxAC, removeTaskAC, tasksReducer, TasksStateType} from "./tasksReducer";
+import {changeCheckBoxAC, changeTaskTitleAC, removeTaskAC, tasksReducer, TasksStateType} from "./tasksReducer";
 
 test('tasksReducer should remove correct task',()=>{
     const startState: TasksStateType = {
