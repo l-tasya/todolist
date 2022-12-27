@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {TodoList} from "./components/TodoList/TodoList";
 import {
     addTaskAC,
@@ -27,47 +27,49 @@ export const App = React.memo(() => {
     const todoLists = useSelector<AppStateType, TodoListsType>(t => t.todoList)
     const dispatch = useDispatch()
 
-    const setFilter = (todoListID: string, newValue: FilterType) => {
-        dispatch(setFilterAC(todoListID, newValue))
-    }
-    const removeTask = (todoListID: string, taskID: string) => {
+
+    const removeTask = useCallback((todoListID: string, taskID: string) => {
         dispatch(removeTaskAC(todoListID, taskID))
-    }
-    const removeTodoList = (todoListID: string) => {
-        dispatch(removeTodoListAC(todoListID))
-    }
-    const changeCheckBox = (todoListID: string, taskID: string, newValue: boolean) => {
+    }, [dispatch])
+
+    const changeCheckBox = useCallback((todoListID: string, taskID: string, newValue: boolean) => {
         dispatch(changeCheckBoxAC(todoListID, taskID, newValue))
-    }
-    const changeTodoListTitle = (todoListID: string, newTitle: string) =>{
-        dispatch(changeTodoListTitleAC(todoListID, newTitle))
-    }
-    const changeTaskTitle = (todoListID: string,taskID: string, newTitle: string) =>{
-        dispatch(changeTaskTitleAC(todoListID,taskID, newTitle))
-    }
-    const addTask = (todoListID: string, newValue: string) =>{
+    }, [dispatch])
+    const changeTaskTitle = useCallback((todoListID: string, taskID: string, newTitle: string) => {
+        dispatch(changeTaskTitleAC(todoListID, taskID, newTitle))
+    }, [dispatch])
+    const addTask = useCallback((todoListID: string, newValue: string) => {
         dispatch(addTaskAC(todoListID, newValue))
-    }
-    const addTodoList = (newValue: string) =>{
+    }, [dispatch])
+
+    //todoList
+    const setFilter = useCallback((todoListID: string, newValue: FilterType) => {
+        dispatch(setFilterAC(todoListID, newValue))
+    }, [dispatch])
+    const removeTodoList = useCallback((todoListID: string) => {
+        dispatch(removeTodoListAC(todoListID))
+    }, [dispatch])
+    const addTodoList = useCallback((newValue: string) => {
         dispatch(addTodoListAC(newValue))
-    }
+    }, [dispatch])
+    const changeTodoListTitle = useCallback((todoListID: string, newTitle: string) => {
+        dispatch(changeTodoListTitleAC(todoListID, newTitle))
+    }, [dispatch])
+
 
     return <div>
         <AddItem addItem={addTodoList}/>
         {
             todoLists.map(t => {
-                let resultTasks = tasks[t.id];
-                if (t.filter === "Active") {
-                    resultTasks = tasks[t.id].filter(t => !t.isDone)
-                }
-                if (t.filter === "Completed") {
-                    resultTasks = tasks[t.id].filter(t => t.isDone)
-                }
                 return <TodoList
+
                     key={t.id}
                     id={t.id}
                     title={t.title}
-                    tasks={resultTasks}
+                    filter={t.filter}
+
+                    tasks={tasks[t.id]}
+
                     setFilter={setFilter}
                     removeTask={removeTask}
                     removeTodoList={removeTodoList}
