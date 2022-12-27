@@ -21,6 +21,7 @@ import {AddItem} from "./common/components/AddItem/AddItem";
 
 
 export const App = () => {
+    //TODO: stylize all appk
     const tasks = useSelector<AppStateType, AllTasksType>(t => t.tasks)
     const todoLists = useSelector<AppStateType, TodoListsType>(t => t.todoList)
     const dispatch = useDispatch()
