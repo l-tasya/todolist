@@ -68,4 +68,20 @@ export const removeTodoListAC = (todoListID: string) =>{
         todoListID,
     } as const
 }
+export const addTodoListAC = (newValue: string) =>{
+    return {
+        type: 'ADD-TODOLIST',
+        id: v1(),
+        newValue,
+
+    } as const
+}
+export const changeTodoListTitleAC = (todoListID: string, newValue: string) =>{
+    return {
+        type: 'CHANGE-TODOLIST-TITLE',
+        todoListID,
+        newValue,
+
+    } as const
+}
 
