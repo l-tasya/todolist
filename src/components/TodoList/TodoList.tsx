@@ -1,9 +1,9 @@
-import React from "react";
+
+import React, {ChangeEvent, useCallback} from "react";
 import {TasksType} from "../../redux/reducers/tasksReducer";
 import {FilterType} from "../../redux/reducers/todoListReducer";
 import {AddItem} from "../../common/components/AddItem/AddItem";
 import {EditableSpan} from "../../common/components/EditableSpan/EditableSpan";
-import styled from "styled-components";
 
 type TodoListPropsType = {
     id: string
@@ -66,11 +66,11 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo(({title, filter,
                 }
             </ul>
             <div>
-                <button onClick={() => setFilter(id, "All")}>all</button>
-                <button onClick={() => setFilter(id, "Completed")}>Completed</button>
-                <button onClick={() => setFilter(id, "Active")}>Active</button>
+                <button onClick={filterAll}>All</button>
+                <button onClick={filterActive}>Completed</button>
+                <button onClick={filterCompleted}>Active</button>
             </div>
-        </div>
+        </>
     }
 )
 
