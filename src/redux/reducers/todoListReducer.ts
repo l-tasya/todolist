@@ -1,4 +1,4 @@
-import {todoList1, todoList2, TodoListsType} from "../../App";
+import {v1} from "uuid";
 
 export type FilterType = "All" | "Completed" | "Active"
 export type TodoListType = {
