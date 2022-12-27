@@ -1,5 +1,6 @@
 import React from "react";
-import {FilterType, TasksType} from "../../App";
+import { TasksType } from "../../redux/reducers/tasksReducer";
+import { FilterType } from "../../redux/reducers/todoListReducer";
 
 
 type TodoListPropsType = {
