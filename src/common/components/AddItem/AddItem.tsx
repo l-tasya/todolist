@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from "react"
+import React, {ChangeEvent, KeyboardEventHandler, useCallback, useState} from "react"
 import TextField from '@mui/material/TextField';
 
 
@@ -7,32 +7,33 @@ type AddItemPropsType = {
 }
 
 export const AddItem: React.FC<AddItemPropsType> = React.memo(({addItem}) => {
-    console.log(AddItem)
-    const [error, setError] = useState('')
-    const [value, setValue] = useState('')
-    const sendCallback = () =>{
-        if(value.trim() !== ''){
-            addItem(value)
-            setValue('')
+    console.log('AddItem')
+    const [error, setError] = useState<string|null>(null)
+    const [value, setValue] = useState<string>('')
+    const enterKeyPressHandler: KeyboardEventHandler<HTMLDivElement> = (e) => {
+        if (error !== null) {
+            setError(null)
         }
-        else{
-            setError('invalid value')
+        if (e.key === 'Enter') {
+            if (value.trim() !== '') {
+                addItem(value)
+                setValue('')
+            } else {
+                setError('Invalid value')
+            }
         }
+
     }
-    const enterHandler = (e: any) => e.key === 'Enter' && sendCallback()
-    const changeHandler = (e: ChangeEvent<HTMLTextAreaElement>) =>{
-        if(error){
-            setError('')
-        }
+    const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.currentTarget.value)
     }
     return <TextField
         size={'small'}
         value={value}
-        onChange={changeHandler}
+        onChange={inputChangeHandler}
         label={'New Item'}
         error={Boolean(error)}
         helperText={error}
-        onKeyPress={enterHandler}
+        onKeyPress={enterKeyPressHandler}
     />
 })
