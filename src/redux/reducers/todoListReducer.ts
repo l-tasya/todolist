@@ -28,7 +28,7 @@ export const todoListReducer = (state: StateType = initialState, action: Actions
             return stateCopy
         }
         case "REMOVE-TODOLIST":{
-            let stateCopy = [...state]
+            const stateCopy = [...state]
             return stateCopy.filter(t=> t.id !== action.todoListID)
         }
         case "ADD-TODOLIST":{
