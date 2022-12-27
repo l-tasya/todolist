@@ -1,4 +1,5 @@
-import React, {useState} from "react"
+import { TextField } from "@mui/material"
+import React, {ChangeEvent, KeyboardEventHandler, useState} from "react"
 
 
 
@@ -8,13 +9,28 @@ type EditableSpanPropsType = {
 }
 
 export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo(({c1, title}) =>{
+    console.log("EditableSpan")
     const [state, setState] = useState(true)
+
     const doubleClickHandler = ()=>{
-        console.log('')
         setState(state=>!state)
     }
-    const enterHandler = (e: KeyboardEvent) =>(e.key === 'Enter') && setState(true)
+    const enterHandler: KeyboardEventHandler<HTMLDivElement> = (e) =>{
+        if(e.key === 'Enter'){
+            setState(state=>!state)
+        }
+    }
+    const onChange = (e: ChangeEvent<HTMLInputElement>)=>c1(e.currentTarget.value)
 
-    // @ts-ignore
-    return  state?<div onDoubleClick={doubleClickHandler}>{title}</div>: <input autoFocus onKeyPress={enterHandler} onDoubleClick={doubleClickHandler} value={title} type="text" onChange={(e)=>c1(e.currentTarget.value)}/>
+    return  state?
+        <span onDoubleClick={doubleClickHandler}>{title}</span>
+        :
+        <TextField
+            autoFocus
+            onKeyPress={enterHandler}
+            onDoubleClick={doubleClickHandler}
+            value={title}
+            type="text"
+            onChange={onChange}
+        />
 })
