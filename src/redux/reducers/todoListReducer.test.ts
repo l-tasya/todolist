@@ -1,4 +1,4 @@
-import {setFilterAC, FilterType, todoListReducer, TodoListsStateType, removeTodoListAC} from "./todoListReducer";
+import {setFilterAC, FilterType, todoListReducer, TodoListsStateType, removeTodoListAC, addTodoListAC, changeTodoListTitleAC} from "./todoListReducer";
 
 
 test('todoList reducer should change filter', ()=>{
