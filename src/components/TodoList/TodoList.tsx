@@ -9,7 +9,7 @@ type TodoListPropsType = {
     id: string
     title: string
     tasks: TasksType
-
+    filter: FilterType
     setFilter: (todoListID: string, newValue: FilterType) => void
     removeTask: (todoListsID: string, taskID: string) => void
     removeTodoList: (todoListsID: string) => void
