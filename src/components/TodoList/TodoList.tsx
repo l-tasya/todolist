@@ -50,12 +50,19 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo(({title, filter,
             <AddItem addItem={addTaskCallback}/>
             <ul>
                 {
-                    tasks.map(t => <Task key={t.id}><input type="checkbox"
-                                                          onChange={(e) => changeCheckBox(id, t.id, e.currentTarget.checked)}
-                                                          checked={t.isDone}/>
-                                                          <EditableSpan c1={(title: string) =>changeTaskTitle(id, t.id, title)} title={t.title}/>
-                        <button onClick={() => removeTask(id, t.id)}>x</button>
-                    </Task>)
+                    resultTasks
+                        .map(t => {
+                            return <Task id={t.id}
+                                         title={t.title}
+                                         isDone={t.isDone}
+
+                                         changeTaskTitle={changeTaskTitle}
+                                         changeCheckBox={changeCheckBox}
+                                         removeTask={removeTask}
+
+                                         todoID={id}
+                            />
+                        })
                 }
             </ul>
             <div>
@@ -63,6 +70,32 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo(({title, filter,
                 <button onClick={() => setFilter(id, "Completed")}>Completed</button>
                 <button onClick={() => setFilter(id, "Active")}>Active</button>
             </div>
+        </div>
+    }
+)
+
+type TaskPropsType = {
+    changeCheckBox: (todoID: string, taskID: string, newValue: boolean) => void
+    changeTaskTitle: (todoID: string, taskID: string, value: string) => void
+    removeTask: (todoID: string, id: string) => void
+    todoID: string
+    //task
+    id: string
+    isDone: boolean
+    title: string
+
+}
+
+const Task: React.FC<TaskPropsType> = React.memo(({changeCheckBox, removeTask, changeTaskTitle, id, todoID, isDone, title}) => {
+        const suicide = useCallback(() => removeTask(todoID, id), [])
+        const changeStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => changeCheckBox(todoID, id, e.currentTarget.checked), [changeCheckBox, id, todoID])
+        const changeTitle = useCallback((value: string) => changeTaskTitle(todoID, id, value), [id, todoID, changeTaskTitle])
+        return <div>
+            <input type="checkbox"
+                   onChange={changeStatus}
+                   checked={isDone}/>
+            <EditableSpan c1={changeTitle} title={title}/>
+            <button onClick={suicide}>x</button>
         </div>
     }
 )
