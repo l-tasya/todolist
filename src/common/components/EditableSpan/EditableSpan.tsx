@@ -5,7 +5,7 @@ import React, {ChangeEvent, KeyboardEventHandler, useState} from "react"
 
 type EditableSpanPropsType = {
     c1: (value: string) => void
-    title: string
+    title: React.ReactNode
 }
 
 export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo(({c1, title}) =>{
@@ -23,7 +23,7 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo(({c1, ti
     const onChange = (e: ChangeEvent<HTMLInputElement>)=>c1(e.currentTarget.value)
 
     return  state?
-        <span onDoubleClick={doubleClickHandler}>{title}</span>
+        <div onDoubleClick={doubleClickHandler}>{title}</div>
         :
         <TextField
             autoFocus
@@ -32,5 +32,7 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo(({c1, ti
             value={title}
             type="text"
             onChange={onChange}
+            variant={"standard"}
+            sx={{fontSize: '1rem'}}
         />
 })

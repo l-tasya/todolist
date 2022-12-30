@@ -18,11 +18,19 @@ import {
 import {AppStateType} from "./redux/store/store";
 import {useDispatch, useSelector} from "react-redux";
 import {AddItem} from "./common/components/AddItem/AddItem";
+import styled from "styled-components";
+import {AppBox, Content, Header} from "./common/styles/global";
+import {NavBar} from "./components/NavBar/NavBar";
 
-
+const TodoContainer = styled.div`
+      margin: 0 16px 16px 8px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      
+`
 export const App = React.memo(() => {
-    console.log('App is called')
-    //TODO: stylize all appk
+    console.log("App is called")
     const tasks = useSelector<AppStateType, AllTasksType>(t => t.tasks)
     const todoLists = useSelector<AppStateType, TodoListsType>(t => t.todoList)
     const dispatch = useDispatch()
@@ -55,30 +63,32 @@ export const App = React.memo(() => {
     const changeTodoListTitle = useCallback((todoListID: string, newTitle: string) => {
         dispatch(changeTodoListTitleAC(todoListID, newTitle))
     }, [dispatch])
+    return <AppBox>
+        <NavBar/>
+        <Content>
+            <Header>
+                <AddItem addItem={addTodoList}/>
+            </Header>
+            <TodoContainer>
+                {
+                    todoLists.map(t =><TodoList
+                            key={t.id}
+                            id={t.id}
+                            title={t.title}
+                            filter={t.filter}
 
+                            tasks={tasks[t.id]}
 
-    return <div>
-        <AddItem addItem={addTodoList}/>
-        {
-            todoLists.map(t => {
-                return <TodoList
-
-                    key={t.id}
-                    id={t.id}
-                    title={t.title}
-                    filter={t.filter}
-
-                    tasks={tasks[t.id]}
-
-                    setFilter={setFilter}
-                    removeTask={removeTask}
-                    removeTodoList={removeTodoList}
-                    changeCheckBox={changeCheckBox}
-                    changeTodoListTitle={changeTodoListTitle}
-                    changeTaskTitle={changeTaskTitle}
-                    addTask={addTask}
-                />
-            })
-        }
-    </div>
+                            setFilter={setFilter}
+                            removeTask={removeTask}
+                            removeTodoList={removeTodoList}
+                            changeCheckBox={changeCheckBox}
+                            changeTodoListTitle={changeTodoListTitle}
+                            changeTaskTitle={changeTaskTitle}
+                            addTask={addTask}
+                        />)
+                }
+            </TodoContainer>
+        </Content>
+    </AppBox>
 })

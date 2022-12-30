@@ -1,12 +1,13 @@
 import React, {ChangeEvent, KeyboardEventHandler, useState} from "react"
 import TextField from "@mui/material/TextField";
+import {TextFieldProps} from "@mui/material/TextField/TextField";
 
 
-type AddItemPropsType = {
+type AddItemPropsType = TextFieldProps & {
     addItem: (text: string) => void
 }
 
-export const AddItem: React.FC<AddItemPropsType> = React.memo(({addItem}) => {
+export const AddItem: React.FC<AddItemPropsType> = React.memo(({addItem, ...rest} ) => {
     console.log("AddItem")
     const [error, setError] = useState<string | null>(null)
     const [value, setValue] = useState<string>("")
@@ -35,5 +36,6 @@ export const AddItem: React.FC<AddItemPropsType> = React.memo(({addItem}) => {
         error={Boolean(error)}
         helperText={error}
         onKeyPress={enterKeyPressHandler}
+        {...rest}
     />
 })
