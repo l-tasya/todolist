@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from "react";
+import React, {useCallback} from "react";
 import {TasksType} from "../../redux/reducers/tasksReducer";
 import {FilterType} from "../../redux/reducers/todoListReducer";
 import {AddItem} from "../../common/components/AddItem/AddItem";
@@ -36,16 +36,12 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo(({title, filter,
         }, [id, removeTodoList])
         //filter
         let resultTasks = tasks;
-
-        useMemo(() => {
-            if (filter === "Active") {
-                resultTasks = tasks.filter(t => !t.isDone)
-            }
-            if (filter === "Completed") {
-                resultTasks = tasks.filter(t => t.isDone)
-            }
-        }, [filter])
-
+        if (filter === "Active") {
+            resultTasks = tasks.filter(t => !t.isDone)
+        }
+        if (filter === "Completed") {
+            resultTasks = tasks.filter(t => t.isDone)
+        }
         const changeFilter = useCallback((e: React.MouseEvent<HTMLElement>, newValue: FilterType) => {
             setFilter(id, newValue)
         }, [setFilter, id])

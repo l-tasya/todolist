@@ -16,7 +16,7 @@ type TaskPropsType = {
 }
 
 export const Task: React.FC<TaskPropsType> = React.memo(({changeCheckBox, removeTask, changeTaskTitle, id, todoID, isDone, title}) => {
-        const suicide = useCallback(() => removeTask(todoID, id), [])
+        const suicide = useCallback(() => removeTask(todoID, id), [removeTask, id, todoID])
         const changeStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => changeCheckBox(todoID, id, e.currentTarget.checked), [changeCheckBox, id, todoID])
         const changeTitle = useCallback((value: string) => changeTaskTitle(todoID, id, value), [id, todoID, changeTaskTitle])
 
