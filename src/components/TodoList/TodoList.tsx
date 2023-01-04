@@ -5,7 +5,6 @@ import {AddItem} from "../../common/components/AddItem/AddItem";
 import {EditableSpan} from "../../common/components/EditableSpan/EditableSpan";
 import {ToggleButton} from "@mui/material";
 import {RemoveItem} from "../../common/components/RemoveC/RemoveItem";
-import {Title} from "../../common/styles/global";
 import {Container, Footer, Header, List} from "./styles";
 import {Task} from "./Task/Task";
 
@@ -47,7 +46,7 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo(({title, filter,
         }, [setFilter, id])
         return <Container>
             <Header>
-                <EditableSpan c1={changeTodoListTitleCallback} title={<Title>{title}</Title>}/>
+                <EditableSpan c1={changeTodoListTitleCallback} title={title}/>
                 <RemoveItem removeCallback={removeTodoListCallback}/>
             </Header>
             <AddItem variant={"standard"} addItem={addTaskCallback}/>

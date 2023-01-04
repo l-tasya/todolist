@@ -15,17 +15,17 @@ export type TasksStateType = AllTasksType
 type StateType = TasksStateType
 
 const initialState: StateType = {
-    ['1']: [
-        {id: '1', title: "JS", isDone: true},
-        {id: '2', title: "Redux", isDone: true},
-        {id: '3', title: "React", isDone: true},
-        {id: '4', title: "Promises", isDone: true},
-        {id: '5', title: "Thunk", isDone: true},
-        {id: '6', title: "GraphQL", isDone: true},
+    [todoList1]: [
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "Redux", isDone: true},
+        {id: v1(), title: "React", isDone: true},
+        {id: v1(), title: "Promises", isDone: true},
+        {id: v1(), title: "Thunk", isDone: true},
+        {id: v1(), title: "GraphQL", isDone: true},
     ],
-    ['2']: [
-        {id: '1', title: "Metro", isDone: false},
-        {id: '2', title: "Death Stranding", isDone: true},
+    [todoList2]: [
+        {id: v1(), title: "Metro", isDone: false},
+        {id: v1(), title: "Death Stranding", isDone: true},
     ]
 }
 

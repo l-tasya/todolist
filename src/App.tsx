@@ -26,7 +26,7 @@ const TodoContainer = styled.div`
       margin: 0 16px 16px 8px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
+      grid-template-rows: 50% 50%;
       
 `
 export const App = React.memo(() => {

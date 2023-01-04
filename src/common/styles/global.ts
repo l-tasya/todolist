@@ -11,13 +11,13 @@ export const Content = styled.div`
     background: #f5f5f5;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 6fr;
+    grid-template-rows: 1fr 9fr;
 `
 export const Header = styled(Paper)`
        align-self: center;
        margin:  0 16px;
-       width: 20%;
-       padding: 8px 10px;
+       width: 10%;
+       padding: 5px;
        display: flex;
        align-items: center;
        justify-content: center;

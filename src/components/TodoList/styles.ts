@@ -34,7 +34,7 @@ font-size: 20px;
 `
 export const Container = styled(Paper)`
     display: grid;
-    grid-template-rows: 1fr 1fr 200px 1fr;
-    padding: 16px;
+    grid-template-rows: 1fr 0.5fr 150px 1fr;
+    padding: 0 16px 16px 16px;
     margin: 8px;
 `

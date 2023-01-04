@@ -26,9 +26,9 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo(({c1, ti
         <div onDoubleClick={doubleClickHandler}>{title}</div>
         :
         <TextField
+            onBlur={doubleClickHandler}
             autoFocus
             onKeyPress={enterHandler}
-            onDoubleClick={doubleClickHandler}
             value={title}
             type="text"
             onChange={onChange}

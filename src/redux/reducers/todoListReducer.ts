@@ -13,8 +13,8 @@ type StateType = TodoListsType
 export const todoList1 = v1()
 export const todoList2 = v1()
 const initialState: StateType = [
-    {id: '1', title: "What to Learn", filter: "All"},
-    {id: '2', title: "What to Play", filter: "Completed"},
+    {id: todoList1, title: "What to Learn", filter: "All"},
+    {id: todoList2, title: "What to Play", filter: "Completed"},
 ]
 //todo: read about uuid and fix simple ids for todo and task
 export const todoListReducer = (state: StateType = initialState, action: ActionsType): StateType => {
