@@ -23,6 +23,7 @@ export const List = styled.div`
      ::-webkit-scrollbar-thumb {
     background: #1a73e8;;
     border-radius: 4px;
+    min-height: 50%;
 } 
 `
 export const Header = styled.div`
