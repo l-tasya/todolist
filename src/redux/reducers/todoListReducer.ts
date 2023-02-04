@@ -22,16 +22,16 @@ export const todoListReducer = (state: ITodoListDomain[] = initialState, action:
             }
             return stateCopy
         }
-        case "REMOVE-TODOLIST":{
+        case "REMOVE-TODO-LIST":{
             const stateCopy = [...state]
             return stateCopy.filter(t=> t.id !== action.todoListID)
         }
-        case "ADD-TODOLIST":{
+        case "ADD-TODO-LIST":{
             const stateCopy = [...state]
             const newItem: ITodoListDomain = {id: action.id, title: action.newValue, order: -9, filter: 'All'}
             return [newItem, ...stateCopy]
         }
-        case "CHANGE-TODOLIST-TITLE":{
+        case "CHANGE-TODO-LIST-TITLE":{
             const stateCopy = [...state]
             const todoList = stateCopy.find(t=>t.id === action.todoListID)
             if(todoList){
@@ -70,13 +70,13 @@ export const setFilterAC = (todoListID: string, newValue: FilterType) =>{
 }
 export const removeTodoListAC = (todoListID: string) =>{
     return {
-        type: 'REMOVE-TODOLIST',
+        type: 'REMOVE-TODO-LIST',
         todoListID,
     } as const
 }
 export const addTodoListAC = (newValue: string) =>{
     return {
-        type: 'ADD-TODOLIST',
+        type: 'ADD-TODO-LIST',
         id: v1(),
         newValue,
 
@@ -84,7 +84,7 @@ export const addTodoListAC = (newValue: string) =>{
 }
 export const changeTodoListTitleAC = (todoListID: string, newValue: string) =>{
     return {
-        type: 'CHANGE-TODOLIST-TITLE',
+        type: 'CHANGE-TODO-LIST-TITLE',
         todoListID,
         newValue,
 
