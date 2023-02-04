@@ -28,7 +28,7 @@ export const todoListReducer = (state: ITodoListDomain[] = initialState, action:
         }
         case "ADD-TODOLIST":{
             const stateCopy = [...state]
-            const newItem: TodoListType = {id: action.id, title: action.newValue, filter: 'All'}
+            const newItem: ITodoListDomain = {id: action.id, title: action.newValue, order: -9, filter: 'All'}
             return [newItem, ...stateCopy]
         }
         case "CHANGE-TODOLIST-TITLE":{
