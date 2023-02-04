@@ -1,4 +1,14 @@
 import {v1} from "uuid";
+import {FilterType, ITodoList, ITodoListDomain} from "../../common/types/types";
+import {todoListsAPI} from "../../api/api";
+import { Dispatch } from "redux";
+import {AppStateType} from "../store/store";
+
+export const todoID1 = v1();
+export const todoID2 = v1();
+const initialState: ITodoListDomain[] = []
+
+
 
 export type FilterType = "All" | "Completed" | "Active"
 export type TodoListType = {
