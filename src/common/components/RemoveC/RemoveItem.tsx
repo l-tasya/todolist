@@ -4,14 +4,14 @@ import styled from "styled-components";
 import {IconButton} from "@mui/material";
 
 
-type RemoveItemPropsType = {
+interface IProps {
     removeCallback: () => void
 }
 
 const Remove = styled(IconButton)`
   
 `
-export const RemoveItem: React.FC<RemoveItemPropsType> = React.memo(({removeCallback}) => {
+export const RemoveItem: React.FC<IProps> = React.memo(({removeCallback}) => {
     const svg = {
         display: 'inline-block',
         fontSize: '1.2rem',

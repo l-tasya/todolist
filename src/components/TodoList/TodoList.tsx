@@ -21,7 +21,6 @@ interface IProps {
     addTask: (todoListID: string, newValue: string) => void
 }
 
-
 export const TodoList: React.FC<IProps> = React.memo(({title, filter, tasks, setFilter, id, removeTask, removeTodoList, changeCheckBox, changeTodoListTitle, changeTaskTitle, addTask,}) => {
         const addTaskCallback = useCallback((title: string) => {
             addTask(id, title)
@@ -54,20 +53,19 @@ export const TodoList: React.FC<IProps> = React.memo(({title, filter, tasks, set
             <List>
                 {
                     resultTasks?.map(t => {
-                            return <Task id={t.id}
-                                         title={t.title}
-                                         isDone={t.completed}
-                                         key={t.id}
-                                         changeTaskTitle={changeTaskTitle}
-                                         changeCheckBox={changeCheckBox}
-                                         removeTask={removeTask}
+                        return <Task id={t.id}
+                                     title={t.title}
+                                     isDone={t.completed}
+                                     key={t.id}
+                                     changeTaskTitle={changeTaskTitle}
+                                     changeCheckBox={changeCheckBox}
+                                     removeTask={removeTask}
 
-                                         todoID={id}
-                            />
-                        })
+                                     todoID={id}
+                        />
+                    })
                 }
             </List>
-
             <Footer fullWidth size={"small"} value={filter} onChange={changeFilter} exclusive color={"primary"}
             >
                 <ToggleButton value={"All"}>All</ToggleButton>

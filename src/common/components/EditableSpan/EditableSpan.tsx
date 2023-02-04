@@ -2,13 +2,12 @@ import { TextField } from "@mui/material"
 import React, {ChangeEvent, KeyboardEventHandler, useState} from "react"
 
 
-
-type EditableSpanPropsType = {
+interface IProps{
     c1: (value: string) => void
     title: string
 }
 
-export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo(({c1, title}) =>{
+export const EditableSpan: React.FC<IProps> = React.memo(({c1, title}) =>{
     console.log("EditableSpan")
     const [state, setState] = useState(true)
     const [value, setValue] = useState(title)

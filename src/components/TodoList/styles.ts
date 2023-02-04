@@ -2,13 +2,12 @@ import styled from "styled-components";
 import {Paper, ToggleButtonGroup} from "@mui/material";
 
 export const Footer = styled(ToggleButtonGroup)`
-  padding: 10px;
-  width: 80%;
-  align-items: center;
+  align-items: flex-end;
   justify-self: center;
 `
 export const List = styled.div`
     overflow-y: scroll;
+    margin: 1px 0;
     display: flex;
     flex-direction: column;
     //firefox
@@ -35,7 +34,6 @@ font-size: 20px;
 `
 export const Container = styled(Paper)`
     display: grid;
-    grid-template-rows: 1fr 0.5fr 150px 1fr;
-    padding: 0 16px 16px 16px;
-    margin: 8px;
+    grid-template-rows: auto 0.5fr 150px 0fr;
+    padding: 0 8px 8px 8px;
 `

@@ -69,15 +69,10 @@ body{
 }
 
 /*FONTS*/
-@font-face {
-    font-family: "DIGITAL";
-    src: local("DIGITAL"),
-    url("common/fonts/digital.TTF") format("truetype");
-    font-weight: bold;
-}
+
 @font-face {
     font-family: "MyFont";
     src: local("MyFont"),
-    url("common/fonts/DIGITALDREAM.ttf") format("truetype");
+    url("common/fonts/DIGITALDREAM.woff2") format("truetype");
     font-weight: bold;
 }

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {TodoList} from "./components/TodoList/TodoList";
 import {addTaskAC, changeCheckBoxAC, changeTaskTitleAC, removeTaskAC} from "./redux/reducers/tasksReducer";
 import {
@@ -8,20 +8,21 @@ import {
     setFilterAC,
     setTodoListsTC,
 } from "./redux/reducers/todoListReducer";
-import {useAppDispatch, AppStateType} from "./redux/store/store";
+import {AppStateType, useAppDispatch} from "./redux/store/store";
 import {useSelector} from "react-redux";
 import {AddItem} from "./common/components/AddItem/AddItem";
 import styled from "styled-components";
-import {AppBox, Content, Header} from "./common/styles/global";
+import {Content, Header, Wrapper} from "./common/styles/global";
 import {NavBar} from "./components/NavBar/NavBar";
 import {FilterType, ITodoListDomain, TasksReducerType} from "./common/types/types";
-
+import {Paper} from "@mui/material";
+import LinearProgress from '@mui/material/LinearProgress';
 const TodoContainer = styled.div`
-      margin: 0 16px 16px 8px;
       display: grid;
+      grid-gap: 8px;
       grid-template-columns: repeat(auto-fill, minmax(300px, 0.8fr));
       justify-content: center;
-      grid-auto-rows: minmax(200px, 350px);
+      grid-auto-rows: minmax(200px, 300px);
       
 `
 export const App = React.memo(() => {
@@ -57,17 +58,36 @@ export const App = React.memo(() => {
     const changeTodoListTitle = useCallback((todoListID: string, newTitle: string) => {
         dispatch(changeTodoListTitleAC(todoListID, newTitle))
     }, [dispatch])
-
+    const [loading, setLoading] = useState(true)
+    const [progress, setProgress] = React.useState(0);
 
     useEffect(() => {
         dispatch(setTodoListsTC)
-    }, [])
+    }, [dispatch])
 
-    return <AppBox>
+    React.useEffect(() => {
+        const timer = setInterval(() => {
+            setProgress((oldProgress) => {
+                if (oldProgress === 100) {
+                    setLoading(false)
+                }
+                let diff = Math.random() * 550;
+                return Math.min(oldProgress + diff, 100);
+            });
+        }, 500);
+
+        return () => {
+            clearInterval(timer);
+        };
+    }, []);
+
+    return loading?<LinearProgress variant="determinate" value={progress} />:<Wrapper>
         <NavBar/>
         <Content>
             <Header>
-                <AddItem addItem={addTodoList}/>
+                <Paper className="add-container">
+                    <AddItem addItem={addTodoList}/>
+                </Paper>
             </Header>
             <TodoContainer>
                 {
@@ -90,5 +110,5 @@ export const App = React.memo(() => {
                 }
             </TodoContainer>
         </Content>
-    </AppBox>
+    </Wrapper>
 })
