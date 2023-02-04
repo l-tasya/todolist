@@ -91,3 +91,16 @@ export const changeTodoListTitleAC = (todoListID: string, newValue: string) =>{
     } as const
 }
 
+
+
+//thunk
+
+
+
+export const setTodoListsTC = (dispatch: Dispatch, getState: ()=>AppStateType, extraArg: any) =>{
+    todoListsAPI.getTodoLists().then((res)=>{
+        dispatch(setTodoListsAC(res.data))
+    })
+}
+
+
