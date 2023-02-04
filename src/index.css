@@ -72,12 +72,12 @@ body{
 @font-face {
     font-family: "DIGITAL";
     src: local("DIGITAL"),
-    url("fonts/digital.TTF") format("truetype");
+    url("common/fonts/digital.TTF") format("truetype");
     font-weight: bold;
 }
 @font-face {
     font-family: "MyFont";
     src: local("MyFont"),
-    url("fonts/DIGITALDREAM.ttf") format("truetype");
+    url("common/fonts/DIGITALDREAM.ttf") format("truetype");
     font-weight: bold;
 }
