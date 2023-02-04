@@ -1,45 +1,39 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import {TodoList} from "./components/TodoList/TodoList";
-import {
-    addTaskAC,
-    AllTasksType,
-    changeCheckBoxAC,
-    changeTaskTitleAC,
-    removeTaskAC
-} from "./redux/reducers/tasksReducer";
+import {addTaskAC, changeCheckBoxAC, changeTaskTitleAC, removeTaskAC} from "./redux/reducers/tasksReducer";
 import {
     addTodoListAC,
     changeTodoListTitleAC,
-    FilterType,
     removeTodoListAC,
     setFilterAC,
-    TodoListsType
+    setTodoListsTC,
 } from "./redux/reducers/todoListReducer";
-import {AppStateType} from "./redux/store/store";
-import {useDispatch, useSelector} from "react-redux";
+import {useAppDispatch, AppStateType} from "./redux/store/store";
+import {useSelector} from "react-redux";
 import {AddItem} from "./common/components/AddItem/AddItem";
 import styled from "styled-components";
 import {AppBox, Content, Header} from "./common/styles/global";
 import {NavBar} from "./components/NavBar/NavBar";
+import {FilterType, ITodoListDomain, TasksReducerType} from "./common/types/types";
 
 const TodoContainer = styled.div`
       margin: 0 16px 16px 8px;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: 50% 50%;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 0.8fr));
+      justify-content: center;
+      grid-auto-rows: minmax(200px, 350px);
       
 `
 export const App = React.memo(() => {
     console.log("App is called")
-    const tasks = useSelector<AppStateType, AllTasksType>(t => t.tasks)
-    const todoLists = useSelector<AppStateType, TodoListsType>(t => t.todoList)
-    const dispatch = useDispatch()
+    const tasks = useSelector<AppStateType, TasksReducerType>(t => t.tasks)
+    const todoLists = useSelector<AppStateType, ITodoListDomain[]>(t => t.todoList)
+    const dispatch = useAppDispatch()
 
-
+    //task
     const removeTask = useCallback((todoListID: string, taskID: string) => {
         dispatch(removeTaskAC(todoListID, taskID))
     }, [dispatch])
-
     const changeCheckBox = useCallback((todoListID: string, taskID: string, newValue: boolean) => {
         dispatch(changeCheckBoxAC(todoListID, taskID, newValue))
     }, [dispatch])
@@ -63,6 +57,12 @@ export const App = React.memo(() => {
     const changeTodoListTitle = useCallback((todoListID: string, newTitle: string) => {
         dispatch(changeTodoListTitleAC(todoListID, newTitle))
     }, [dispatch])
+
+
+    useEffect(() => {
+        dispatch(setTodoListsTC)
+    }, [])
+
     return <AppBox>
         <NavBar/>
         <Content>
@@ -71,22 +71,22 @@ export const App = React.memo(() => {
             </Header>
             <TodoContainer>
                 {
-                    todoLists.map(t =><TodoList
-                            key={t.id}
-                            id={t.id}
-                            title={t.title}
-                            filter={t.filter}
+                    todoLists.map(t => <TodoList
+                        key={t.id}
+                        id={t.id}
+                        title={t.title}
+                        filter={t.filter}
 
-                            tasks={tasks[t.id]}
+                        tasks={tasks[t.id]}
 
-                            setFilter={setFilter}
-                            removeTask={removeTask}
-                            removeTodoList={removeTodoList}
-                            changeCheckBox={changeCheckBox}
-                            changeTodoListTitle={changeTodoListTitle}
-                            changeTaskTitle={changeTaskTitle}
-                            addTask={addTask}
-                        />)
+                        setFilter={setFilter}
+                        removeTask={removeTask}
+                        removeTodoList={removeTodoList}
+                        changeCheckBox={changeCheckBox}
+                        changeTodoListTitle={changeTodoListTitle}
+                        changeTaskTitle={changeTaskTitle}
+                        addTask={addTask}
+                    />)
                 }
             </TodoContainer>
         </Content>
