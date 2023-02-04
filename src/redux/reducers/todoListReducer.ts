@@ -39,6 +39,9 @@ export const todoListReducer = (state: ITodoListDomain[] = initialState, action:
             }
             return stateCopy
         }
+        case "SET-TODO-LISTS":{
+            return action.items.map((t): ITodoListDomain=>({...t, filter: "All"}))
+        }
         default: {
             return state
         }
