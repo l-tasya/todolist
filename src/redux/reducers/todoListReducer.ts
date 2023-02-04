@@ -54,6 +54,13 @@ type ActionsType = ReturnType<typeof setFilterAC>
     |ReturnType<typeof changeTodoListTitleAC>
     |ReturnType<typeof setTodoListsAC>
 
+
+export const setTodoListsAC = (items: ITodoList[]) =>{
+    return {
+        type: 'SET-TODO-LISTS',
+        items
+    } as const
+}
 export const setFilterAC = (todoListID: string, newValue: FilterType) =>{
     return {
         type: 'SET-FILTER',
