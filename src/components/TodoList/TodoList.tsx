@@ -1,17 +1,16 @@
 import React, {useCallback} from "react";
-import {TasksType} from "../../redux/reducers/tasksReducer";
-import {FilterType} from "../../redux/reducers/todoListReducer";
 import {AddItem} from "../../common/components/AddItem/AddItem";
 import {EditableSpan} from "../../common/components/EditableSpan/EditableSpan";
 import {ToggleButton} from "@mui/material";
 import {RemoveItem} from "../../common/components/RemoveC/RemoveItem";
 import {Container, Footer, Header, List} from "./styles";
 import {Task} from "./Task/Task";
+import {FilterType, ITask} from "../../common/types/types";
 
-type TodoListPropsType = {
+interface IProps {
     id: string
     title: string
-    tasks: TasksType
+    tasks: ITask[]
     filter: FilterType
     setFilter: (todoListID: string, newValue: FilterType) => void
     removeTask: (todoListsID: string, taskID: string) => void
@@ -23,7 +22,7 @@ type TodoListPropsType = {
 }
 
 
-export const TodoList: React.FC<TodoListPropsType> = React.memo(({title, filter, setFilter, tasks, id, removeTask, removeTodoList, changeCheckBox, changeTodoListTitle, changeTaskTitle, addTask,}) => {
+export const TodoList: React.FC<IProps> = React.memo(({title, filter, tasks, setFilter, id, removeTask, removeTodoList, changeCheckBox, changeTodoListTitle, changeTaskTitle, addTask,}) => {
         const addTaskCallback = useCallback((title: string) => {
             addTask(id, title)
         }, [id, addTask])
@@ -34,13 +33,15 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo(({title, filter,
             removeTodoList(id)
         }, [id, removeTodoList])
         //filter
+
         let resultTasks = tasks;
         if (filter === "Active") {
-            resultTasks = tasks.filter(t => !t.isDone)
+            resultTasks = tasks.filter(t => !t.completed)
         }
         if (filter === "Completed") {
-            resultTasks = tasks.filter(t => t.isDone)
+            resultTasks = tasks.filter(t => t.completed)
         }
+
         const changeFilter = useCallback((e: React.MouseEvent<HTMLElement>, newValue: FilterType) => {
             setFilter(id, newValue)
         }, [setFilter, id])
@@ -52,11 +53,10 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo(({title, filter,
             <AddItem variant={"standard"} addItem={addTaskCallback}/>
             <List>
                 {
-                    resultTasks
-                        .map(t => {
+                    resultTasks?.map(t => {
                             return <Task id={t.id}
                                          title={t.title}
-                                         isDone={t.isDone}
+                                         isDone={t.completed}
                                          key={t.id}
                                          changeTaskTitle={changeTaskTitle}
                                          changeCheckBox={changeCheckBox}
