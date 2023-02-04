@@ -11,17 +11,53 @@ const rootReducer = combineReducers({
     todoList: todoListReducer,
 })
 
-const initGlobalState = {
+const initGlobalState: AppStateType = {
     todoList: [
-        {id: "todoID1", title: "Games", filter: "all"},
-        {id: "todoID2", title: "Films", filter: "all"},
+        {
+            id: "todoID1",
+            title: "Games",
+            filter: "All",
+            addedDate: Date,
+            order: 0
+        },
+        {
+            id: "todoID2",
+            title: "Films",
+            filter: "All",
+            addedDate: Date,
+            order: 1
+        },
     ],
     tasks: {
         ["todoID1"]: [
-            {id: "1", title: "Metro", isDone: false}
+            {
+                id: "1",
+                title: "Metro",
+                completed: false,
+                todoListId: "todoID1",
+                status: 0,
+                startDate: Date,
+                addedDate: Date,
+                deadline: Date,
+                priority: 0,
+                order: 0,
+                description: ''
+            }
         ],
         ["todoID2"]: [
-            {id: "1", title: "Wolf from Wall st.", isDone: true}
+            {
+                id: "1",
+                title: "Wolf from Wall st.",
+                completed: true,
+                todoListId: "todoID2",
+                status: 0,
+                startDate: Date,
+                addedDate: Date,
+                deadline: Date,
+                priority: 0,
+                order: 0,
+                description: ''
+            }
         ]
     }
 }
