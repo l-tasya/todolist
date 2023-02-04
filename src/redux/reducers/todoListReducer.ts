@@ -52,6 +52,7 @@ type ActionsType = ReturnType<typeof setFilterAC>
     |ReturnType<typeof removeTodoListAC>
     |ReturnType<typeof addTodoListAC>
     |ReturnType<typeof changeTodoListTitleAC>
+    |ReturnType<typeof setTodoListsAC>
 
 export const setFilterAC = (todoListID: string, newValue: FilterType) =>{
     return {
