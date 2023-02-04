@@ -1,17 +1,23 @@
-import {applyMiddleware, combineReducers, createStore } from "redux";
+import {AnyAction, applyMiddleware, combineReducers, legacy_createStore } from "redux";
 import {todoListReducer} from "../reducers/todoListReducer";
 import {tasksReducer} from "../reducers/tasksReducer";
 import {loadState, saveState} from "../../common/utils/localstorage-utils";
-import thunk from 'redux-thunk';
+import thunk, {ThunkDispatch} from "redux-thunk";
+import {useDispatch} from "react-redux";
 
-
+export type AppStateType = ReturnType<typeof reducers>;
 
 const reducers = combineReducers({
     todoList: todoListReducer,
     tasks: tasksReducer,
 })
 
-export let store = createStore(reducers, loadState(),applyMiddleware(thunk));
+export let store = legacy_createStore(reducers, loadState(),applyMiddleware(thunk));
+
+export type AppThunkDispatchType = ThunkDispatch<AppStateType, any, AnyAction>
+
+export const useAppDispatch = () => useDispatch<AppThunkDispatchType>()
+
 
 store.subscribe(()=>{
     saveState({
@@ -20,6 +26,6 @@ store.subscribe(()=>{
     })
 })
 export type StoreType = typeof store;
-export type AppStateType = ReturnType<typeof reducers>;
+
 //@ts-ignore
 window.store = store
