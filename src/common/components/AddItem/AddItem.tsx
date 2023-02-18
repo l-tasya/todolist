@@ -1,6 +1,5 @@
 import React, {ChangeEvent, KeyboardEventHandler, useState} from "react"
-import TextField from "@mui/material/TextField";
-import {TextFieldProps} from "@mui/material/TextField/TextField";
+import TextField, {TextFieldProps} from '@mui/material/TextField';
 
 
 type AddItemPropsType = TextFieldProps & {
