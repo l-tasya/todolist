@@ -68,30 +68,16 @@ export const TodoList: React.FC<IProps> = React.memo<IProps>(({title, filter, ta
         return <Container>
             <Header>
                 <EditableSpan c1={changeTodoListTitleCallback} title={title}/>
-                <RemoveItem removeCallback={removeTodoListCallback}/>
+                <RemoveItem disabled={entityStatus === 'loading'} removeCallback={removeTodoListCallback}/>
             </Header>
-            <AddItem variant={"standard"} addItem={addTaskCallback}/>
+            <AddItem variant={'standard'} disabled={entityStatus === 'loading'} addItem={addTaskCallback}/>
             <List>
-                {
-                    resultTasks?.map(t => {
-                        return <Task id={t.id}
-                                     title={t.title}
-                                     isDone={t.completed}
-                                     key={t.id}
-                                     changeTaskTitle={changeTaskTitle}
-                                     changeCheckBox={changeCheckBox}
-                                     removeTask={removeTask}
-
-                                     todoID={id}
-                        />
-                    })
-                }
+                {tasksElements}
             </List>
-            <Footer fullWidth size={"small"} value={filter} onChange={changeFilter} exclusive color={"primary"}
-            >
-                <ToggleButton value={"All"}>All</ToggleButton>
-                <ToggleButton value={"Completed"}>Completed</ToggleButton>
-                <ToggleButton value={"Active"}>Active</ToggleButton>
+            <Footer fullWidth size={'small'} value={filter} onChange={changeFilter} exclusive color={'primary'}>
+                <ToggleButton value={'All'}>All</ToggleButton>
+                <ToggleButton value={'Completed'}>Completed</ToggleButton>
+                <ToggleButton value={'Active'}>Active</ToggleButton>
             </Footer>
         </Container>
     }
