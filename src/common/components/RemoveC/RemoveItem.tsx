@@ -1,7 +1,7 @@
 import React from "react"
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import styled from "styled-components";
-import {IconButton} from "@mui/material";
+import IconButton, { IconButtonProps } from "@mui/material/IconButton/IconButton";
 
 
 interface IProps {
