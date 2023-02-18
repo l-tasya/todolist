@@ -10,9 +10,6 @@ export const todoID2 = v1();
 const initialState: ITodoListDomain[] = []
 
 
-
-
-
 export const todoListReducer = (state: ITodoListDomain[] = initialState, action: ActionsType): ITodoListDomain[] => {
     switch (action.type) {
         case 'SET-FILTER': {
@@ -49,35 +46,34 @@ type ActionsType = ReturnType<typeof setFilterAC>
     | ReturnType<typeof setErrorAC>
     | ReturnType<typeof setTodoListEntityAC>
 
-
-export const setTodoListsAC = (items: ITodoList[]) =>{
+//actions
+export const setTodoListsAC = (items: ITodoList[]) => {
     return {
         type: 'SET-TODO-LISTS',
         items
     } as const
 }
-export const setFilterAC = (todoListID: string, newValue: FilterType) =>{
+export const setFilterAC = (todoListID: string, newValue: FilterType) => {
     return {
         type: 'SET-FILTER',
         todoListID,
         newValue,
     } as const
 }
-export const removeTodoListAC = (todoListID: string) =>{
+export const removeTodoListAC = (todoListID: string) => {
     return {
         type: 'REMOVE-TODO-LIST',
         todoListID,
     } as const
 }
-export const addTodoListAC = (newValue: string) =>{
+export const addTodoListAC = (item: ITodoList) => {
     return {
         type: 'ADD-TODO-LIST',
-        id: v1(),
-        newValue,
+        item,
 
     } as const
 }
-export const changeTodoListTitleAC = (todoListID: string, newValue: string) =>{
+export const changeTodoListTitleAC = (todoListID: string, newValue: string) => {
     return {
         type: 'CHANGE-TODO-LIST-TITLE',
         todoListID,
