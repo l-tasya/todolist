@@ -13,31 +13,10 @@ export const App = () => {
     return <Wrapper>
         <NavBar/>
         <Content>
-            <Header>
-                <Paper className="add-container">
-                    <AddItem addItem={addTodoList}/>
-                </Paper>
-            </Header>
-            <TodoContainer>
-                {
-                    todoLists.map(t => <TodoList
-                        key={t.id}
-                        id={t.id}
-                        title={t.title}
-                        filter={t.filter}
-
-                        tasks={tasks[t.id]}
-
-                        setFilter={setFilter}
-                        removeTask={removeTask}
-                        removeTodoList={removeTodoList}
-                        changeCheckBox={changeCheckBox}
-                        changeTodoListTitle={changeTodoListTitle}
-                        changeTaskTitle={changeTaskTitle}
-                        addTask={addTask}
-                    />)
-                }
-            </TodoContainer>
+            {status === 'loading' && <LinearProgress sx={stylesForLoading}/>}
+            {status === 'failed' &&
+            <LinearProgress variant={'determinate'} value={100} color={'error'} sx={stylesForLoading}/>}
+            <TodoListsLists/>
         </Content>
     </Wrapper>
 }
