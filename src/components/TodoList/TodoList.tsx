@@ -1,11 +1,14 @@
-import React, {useCallback} from "react";
-import {AddItem} from "../../common/components/AddItem/AddItem";
-import {EditableSpan} from "../../common/components/EditableSpan/EditableSpan";
-import {ToggleButton} from "@mui/material";
-import {RemoveItem} from "../../common/components/RemoveC/RemoveItem";
-import {Container, Footer, Header, List} from "./styles";
-import {Task} from "./Task/Task";
-import {FilterType, ITask} from "../../common/types/types";
+import React, {useCallback, useEffect} from 'react';
+import {AddItem} from '../../common/components/AddItem/AddItem';
+import {EditableSpan} from '../../common/components/EditableSpan/EditableSpan';
+import {RemoveItem} from '../../common/components/RemoveC/RemoveItem';
+import {Container, Footer, Header, List} from './styles';
+import {Task} from './Task/Task';
+import {FilterType, ITaskDomain, TaskStatuses} from '../../common/types/types';
+import {fetchTasksTC} from '../../redux/reducers/tasksReducer';
+import {useAppDispatch} from '../../common/hooks/hooks';
+import ToggleButton from '@mui/material/ToggleButton/ToggleButton';
+import {RequestStatusType} from '../../redux/reducers/app-reducer';
 
 interface IProps {
     id: string
