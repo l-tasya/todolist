@@ -10,6 +10,7 @@ export type AppStateType = ReturnType<typeof reducers>;
 const reducers = combineReducers({
     todoList: todoListReducer,
     tasks: tasksReducer,
+    app: appReducer,
 })
 
 export let store = legacy_createStore(reducers, loadState(),applyMiddleware(thunk));
