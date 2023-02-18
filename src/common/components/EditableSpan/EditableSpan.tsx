@@ -5,9 +5,10 @@ import React, {ChangeEvent, KeyboardEventHandler, useState} from "react"
 interface IProps{
     c1: (value: string) => void
     title: string
+    disabled?: boolean
 }
 
-export const EditableSpan: React.FC<IProps> = React.memo(({c1, title}) =>{
+export const EditableSpan: React.FC<IProps> = React.memo(({c1, title, disabled}) =>{
     console.log("EditableSpan")
     const [state, setState] = useState(true)
     const [value, setValue] = useState(title)
@@ -15,8 +16,12 @@ export const EditableSpan: React.FC<IProps> = React.memo(({c1, title}) =>{
         c1(value)
     }
     const activateEditMode = () =>{
+        if(disabled === true){
+            return;
+        }
         setState(state=>!state)
         setValue(title)
+
     }
     const activateViewMode = () =>{
         setState(state=>!state)
