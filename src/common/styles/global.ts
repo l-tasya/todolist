@@ -5,14 +5,21 @@ export const Title = styled.div`
   font-weight: 700;
   text-align: center;
 `
+export const stylesForLoading = {
+    position: 'absolute',
+    width: '100%',
+    top: 0,
+    left: 0,
+}
 export const Content = styled.div`
     background: #f5f5f5;
-    display: grid;
-    grid-gap: 8px;
-    padding: 8px;
-    grid-template-columns: 1fr;
-    grid-template-rows: 50px 9fr;
+    position: relative;
     grid-area: c;
+    padding: 16px 8px 8px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 360px;
 `
 export const Header = styled.div`
     display: flex;
@@ -22,7 +29,7 @@ export const Header = styled.div`
     .add-container{
       display: flex;
       align-items: center;
-      padding: 0 5px;
+      padding: 5px 5px;
     }
 `
 export const NavBarContainer = styled.div`
