@@ -17,46 +17,52 @@ const initGlobalState: AppStateType = {
             id: "todoID1",
             title: "Games",
             filter: "All",
-            addedDate: Date,
-            order: 0
+            addedDate: '',
+            order: 0,
+            entityStatus: 'idle'
         },
         {
             id: "todoID2",
             title: "Films",
             filter: "All",
-            addedDate: Date,
-            order: 1
+            addedDate: '',
+            order: 1,
+            entityStatus: 'idle'
         },
     ],
+    app: {
+        status: 'succeeded',
+        error: null
+    },
     tasks: {
         ["todoID1"]: [
             {
                 id: "1",
                 title: "Metro",
-                completed: false,
                 todoListId: "todoID1",
                 status: 0,
-                startDate: Date,
-                addedDate: Date,
-                deadline: Date,
+                startDate: '',
+                addedDate: '',
+                deadline: '',
                 priority: 0,
                 order: 0,
-                description: ''
+                description: '',
+                entityStatus: 'idle'
             }
         ],
         ["todoID2"]: [
             {
                 id: "1",
                 title: "Wolf from Wall st.",
-                completed: true,
                 todoListId: "todoID2",
                 status: 0,
-                startDate: Date,
-                addedDate: Date,
-                deadline: Date,
+                startDate: '',
+                addedDate: '',
+                deadline: '',
                 priority: 0,
                 order: 0,
-                description: ''
+                description: '',
+                entityStatus: 'idle'
             }
         ]
     }
