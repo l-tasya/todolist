@@ -4,14 +4,14 @@ import styled from "styled-components";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton/IconButton";
 
 
-interface IProps {
+type IProps = IconButtonProps & {
     removeCallback: () => void
 }
 
 const Remove = styled(IconButton)`
   
 `
-export const RemoveItem: React.FC<IProps> = React.memo(({removeCallback}) => {
+export const RemoveItem: React.FC<IProps> = React.memo(({removeCallback, ...rest} ) => {
     const svg = {
         display: 'inline-block',
         fontSize: '1.2rem',
@@ -21,7 +21,7 @@ export const RemoveItem: React.FC<IProps> = React.memo(({removeCallback}) => {
             transition: '0.3s'
         }
     }
-    return <Remove size='small' sx={{marginLeft: '5px'}} onClick={removeCallback}>
+    return <Remove {...rest} size='small' sx={{marginLeft: '5px'}} onClick={removeCallback}>
         <RemoveCircleIcon sx={svg}/>
     </Remove>
 })
