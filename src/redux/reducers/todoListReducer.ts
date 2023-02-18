@@ -14,33 +14,24 @@ const initialState: ITodoListDomain[] = []
 
 export const todoListReducer = (state: ITodoListDomain[] = initialState, action: ActionsType): ITodoListDomain[] => {
     switch (action.type) {
-        case "SET-FILTER":{
-            const stateCopy = [...state]
-            const todoList = stateCopy.find(t=>t.id === action.todoListID)
-            if(todoList){
-                todoList.filter = action.newValue
-            }
-            return stateCopy
+        case 'SET-FILTER': {
+            return state.map(tl => tl.id === action.todoListID ? {...tl, filter: action.newValue} : tl)
         }
-        case "REMOVE-TODO-LIST":{
-            const stateCopy = [...state]
-            return stateCopy.filter(t=> t.id !== action.todoListID)
+        case 'REMOVE-TODO-LIST': {
+            return state.filter(t => t.id !== action.todoListID)
         }
-        case "ADD-TODO-LIST":{
-            const stateCopy = [...state]
-            const newItem: ITodoListDomain = {id: action.id, title: action.newValue, order: -9, filter: 'All'}
-            return [newItem, ...stateCopy]
+        case 'ADD-TODO-LIST': {
+            const newItem: ITodoListDomain = {...action.item, entityStatus: 'idle', filter: 'All'}
+            return [newItem, ...state]
         }
-        case "CHANGE-TODO-LIST-TITLE":{
-            const stateCopy = [...state]
-            const todoList = stateCopy.find(t=>t.id === action.todoListID)
-            if(todoList){
-                todoList.title = action.newValue
-            }
-            return stateCopy
+        case 'SET-TODO-LIST-ENTITY': {
+            return state.map(tl => tl.id === action.todoListID ? {...tl, entityStatus: action.newValue} : tl)
         }
-        case "SET-TODO-LISTS":{
-            return action.items.map((t): ITodoListDomain=>({...t, filter: "All"}))
+        case 'CHANGE-TODO-LIST-TITLE': {
+            return state.map(tl => tl.id === action.todoListID ? {...tl, title: action.newValue} : tl)
+        }
+        case 'SET-TODO-LISTS': {
+            return action.items.map((t): ITodoListDomain => ({...t, filter: 'All', entityStatus: 'idle'}))
         }
         default: {
             return state
