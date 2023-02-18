@@ -18,6 +18,6 @@ export const App = () => {
             <LinearProgress variant={'determinate'} value={100} color={'error'} sx={stylesForLoading}/>}
             <TodoListsLists/>
         </Content>
-add        <ErrorSnackbar/>
+        <ErrorSnackbar/>
     </Wrapper>
 }
