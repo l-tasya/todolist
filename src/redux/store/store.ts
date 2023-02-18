@@ -1,9 +1,9 @@
-import {AnyAction, applyMiddleware, combineReducers, legacy_createStore } from "redux";
-import {todoListReducer} from "../reducers/todoListReducer";
-import {tasksReducer} from "../reducers/tasksReducer";
-import {loadState, saveState} from "../../common/utils/localstorage-utils";
-import thunk, {ThunkDispatch} from "redux-thunk";
-import {useDispatch} from "react-redux";
+import {applyMiddleware, combineReducers, legacy_createStore} from 'redux';
+import {todoListReducer} from '../reducers/todoListReducer';
+import {tasksReducer} from '../reducers/tasksReducer';
+import {saveState} from '../../common/utils/localstorage-utils';
+import thunk from 'redux-thunk';
+import {appReducer} from '../reducers/app-reducer';
 
 export type AppStateType = ReturnType<typeof reducers>;
 
@@ -12,18 +12,14 @@ const reducers = combineReducers({
     tasks: tasksReducer,
     app: appReducer,
 })
+//export let store = legacy_createStore(reducers,loadState(), applyMiddleware(thunk)); ---- local storage
+export let store = legacy_createStore(reducers, applyMiddleware(thunk));
 
-export let store = legacy_createStore(reducers, loadState(),applyMiddleware(thunk));
-
-export type AppThunkDispatchType = ThunkDispatch<AppStateType, any, AnyAction>
-
-export const useAppDispatch = () => useDispatch<AppThunkDispatchType>()
-
-
-store.subscribe(()=>{
+store.subscribe(() => {
     saveState({
         todoList: store.getState().todoList,
         tasks: store.getState().tasks,
+        app: store.getState().app,
     })
 })
 export type StoreType = typeof store;
