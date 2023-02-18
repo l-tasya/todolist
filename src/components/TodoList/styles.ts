@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import {Paper, ToggleButtonGroup} from "@mui/material";
+import Paper from '@mui/material/Paper/Paper';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup/ToggleButtonGroup';
+import styled from 'styled-components';
 
 export const Footer = styled(ToggleButtonGroup)`
   align-items: flex-end;
@@ -34,6 +35,6 @@ font-size: 20px;
 `
 export const Container = styled(Paper)`
     display: grid;
-    grid-template-rows: auto 0.5fr 150px 0fr;
+    grid-template-rows: auto auto 1fr 0fr;
     padding: 0 8px 8px 8px;
 `
