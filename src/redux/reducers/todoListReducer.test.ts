@@ -1,17 +1,29 @@
-import {addTodoListAC, changeTodoListTitleAC, removeTodoListAC, setFilterAC, todoListReducer,} from "./todoListReducer";
+import {
+    addTodoListAC,
+    changeTodoListTitleAC,
+    removeTodoListAC,
+    setFilterAC,
+    setTodoListEntityAC,
+    todoListReducer,
+} from './todoListReducer';
 import {FilterType, TodoListReducerType} from "../../common/types/types";
+import {RequestStatusType} from './app-reducer';
 const startState: TodoListReducerType = [
     {
         id: "1",
         title: "What to Learn",
         order: 0,
-        filter: "All"
+        filter: "All",
+        addedDate: '',
+        entityStatus: 'idle'
     },
     {
         id: "2",
         title: "What to Play",
         order: -1,
-        filter: "Completed"
+        filter: "Completed",
+        addedDate: '',
+        entityStatus: 'idle'
     },
 ]
 test("todoList reducer should change filter", () => {
@@ -27,10 +39,10 @@ test("todoListReducer should remove TodoList", () => {
     expect(endState.length).toEqual(1)
 })
 test("todoListReducer should add TodoList", () => {
-    const newItem = "What to watch";
-    const endState = todoListReducer(startState, addTodoListAC(newItem))
+    const newItem = {id: 'd', addedDate: '', order: 0, title: 'test'}
+    const endState = todoListReducer(startState, addTodoListAC({id: 'd', addedDate: '', order: 0, title: 'test'}))
     expect(endState.length).toEqual(startState.length + 1)
-    expect(endState[0].title).toBe(newItem)
+    expect(endState[0].title).toBe(newItem.title)
 
 })
 test("todoListReducer change correct todoList title", () => {
@@ -38,5 +50,12 @@ test("todoListReducer change correct todoList title", () => {
     let todoID = startState[0].id
     const endState = todoListReducer(startState, changeTodoListTitleAC(todoID, newItem))
     expect(endState[0].title).toBe(newItem)
+
+})
+test("todoListReducer should change correct entity", ()=>{
+    const newValue:RequestStatusType = 'loading';
+    let todoID = startState[0].id;
+    const endState = todoListReducer(startState, setTodoListEntityAC(todoID, newValue))
+    expect(endState[0].entityStatus).toEqual(newValue)
 
 })
