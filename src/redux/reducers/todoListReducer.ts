@@ -1,8 +1,9 @@
-import {v1} from "uuid";
-import {FilterType, ITodoList, ITodoListDomain} from "../../common/types/types";
-import {todoListsAPI} from "../../api/api";
-import { Dispatch } from "redux";
-import {AppStateType} from "../store/store";
+import {v1} from 'uuid';
+import {FilterType, ITodoList, ITodoListDomain, ResultCodes} from '../../common/types/types';
+import {todoListsAPI} from '../../api/todolists-api';
+import {Dispatch} from 'redux';
+import {RequestStatusType, setErrorAC, setLoadingStatusAC} from './app-reducer';
+import {handleServerAppError, handleServerNetworkError} from '../../common/utils/error-utils';
 
 export const todoID1 = v1();
 export const todoID2 = v1();
@@ -40,10 +41,13 @@ export const todoListReducer = (state: ITodoListDomain[] = initialState, action:
 }
 
 type ActionsType = ReturnType<typeof setFilterAC>
-    |ReturnType<typeof removeTodoListAC>
-    |ReturnType<typeof addTodoListAC>
-    |ReturnType<typeof changeTodoListTitleAC>
-    |ReturnType<typeof setTodoListsAC>
+    | ReturnType<typeof removeTodoListAC>
+    | ReturnType<typeof addTodoListAC>
+    | ReturnType<typeof changeTodoListTitleAC>
+    | ReturnType<typeof setTodoListsAC>
+    | ReturnType<typeof setLoadingStatusAC>
+    | ReturnType<typeof setErrorAC>
+    | ReturnType<typeof setTodoListEntityAC>
 
 
 export const setTodoListsAC = (items: ITodoList[]) =>{
@@ -82,16 +86,77 @@ export const changeTodoListTitleAC = (todoListID: string, newValue: string) =>{
     } as const
 }
 
+//thunks
+export const fetchTodoListsThunk = () => {
+    return (dispatch: Dispatch<ActionsType>) => {
+        dispatch(setLoadingStatusAC('loading'))
+        todoListsAPI.getTodoLists()
+            .then((res) => {
+                dispatch(setTodoListsAC(res.data))
+                setTimeout(() => dispatch(setLoadingStatusAC('succeeded')), 300)
+            })
+    }
 
-
-//thunk
-
-
-
-export const setTodoListsTC = (dispatch: Dispatch, getState: ()=>AppStateType, extraArg: any) =>{
-    todoListsAPI.getTodoLists().then((res)=>{
-        dispatch(setTodoListsAC(res.data))
-    })
 }
+//server error
+export const addTodoListTC = (title: string) => {
+    return (dispatch: Dispatch<ActionsType>) => {
+        dispatch(setLoadingStatusAC('loading'))
+        todoListsAPI.createTodoList(title)
+            .then((res) => {
+                if (res.data.resultCode === ResultCodes.Success) {
+                    const action = addTodoListAC(res.data.data.item)
+                    dispatch(action)
+                    setTimeout(() => dispatch(setLoadingStatusAC('succeeded')), 300)
+                } else {
+                    handleServerAppError(res.data, dispatch)
+                }
+            })
+            .catch((e)=>{
+                handleServerNetworkError(dispatch, e)
+            })
 
+    }
+}
+//with entity
+export const removeTodoListTC = (todoListID: string) => {
+    return (dispatch: Dispatch<ActionsType>) => {
+        dispatch(setLoadingStatusAC('loading'))
+        dispatch(setTodoListEntityAC(todoListID, 'loading'))
 
+        todoListsAPI.deleteTodoList(todoListID)
+            .then((res) => {
+
+                if (res.data.resultCode === ResultCodes.Success) {
+                    const action = removeTodoListAC(todoListID)
+                    dispatch(action)
+                    setTimeout(() => dispatch(setLoadingStatusAC('succeeded')), 300)
+                    dispatch(setTodoListEntityAC(todoListID, 'succeeded'))
+                }
+            })
+            .catch((e) => {
+                dispatch(setTodoListEntityAC(todoListID, 'failed'))
+                handleServerNetworkError(dispatch, e)
+            })
+    }
+}
+//default
+export const updateTodoListTitleTC = (todoListID: string, title: string) => {
+    return (dispatch: Dispatch<ActionsType>) => {
+        dispatch(setLoadingStatusAC('loading'))
+        todoListsAPI.updateTodoList(todoListID, title)
+            .then((res) => {
+                if (res.data.resultCode === ResultCodes.Success) {
+                    const action = changeTodoListTitleAC(todoListID, title)
+                    dispatch(action)
+                    setTimeout(() => dispatch(setLoadingStatusAC('succeeded')), 300)
+                }
+                else{
+                    handleServerAppError(res.data, dispatch)
+                }
+            })
+            .catch((e)=>{
+                handleServerNetworkError(dispatch, e)
+            })
+    }
+}
