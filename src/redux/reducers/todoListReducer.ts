@@ -81,6 +81,13 @@ export const changeTodoListTitleAC = (todoListID: string, newValue: string) => {
 
     } as const
 }
+export const setTodoListEntityAC = (todoListID: string, newValue: RequestStatusType) => {
+    return {
+        type: 'SET-TODO-LIST-ENTITY',
+        todoListID,
+        newValue
+    } as const
+}
 
 //thunks
 export const fetchTodoListsThunk = () => {
