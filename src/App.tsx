@@ -32,7 +32,12 @@ export const App = () => {
             {status === 'loading' && <LinearProgress sx={stylesForLoading}/>}
             {status === 'failed' &&
             <LinearProgress variant={'determinate'} value={100} color={'error'} sx={stylesForLoading}/>}
-            <TodoListsLists/>
+            <Routes>
+                <Route path={'/todolist/'} element={<TodoListsLists/>}/>
+                <Route path={'/todolist/login'} element={<Login/>}/>
+                <Route path={'/404'} element={<h1>Page Not Found. 404</h1>}/>
+                <Route path={'*'} element={<Navigate to={'/404'}/>}/>
+            </Routes>
         </Content>
         <ErrorSnackbar/>
     </Wrapper>
