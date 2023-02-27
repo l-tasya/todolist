@@ -30,6 +30,11 @@ const initGlobalState: AppStateType = {
             entityStatus: 'idle'
         },
     ],
+    auth: {
+        isLoggedIn: false,
+        isInitialized: false,
+    }
+    ,
     app: {
         status: 'succeeded',
         error: null
