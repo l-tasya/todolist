@@ -35,7 +35,7 @@ export const AddItem: React.FC<AddItemPropsType> = React.memo(({addItem, ...rest
         className={'add-item'}
         error={Boolean(error)}
         helperText={error}
-        onKeyPress={enterKeyPressHandler}
+        onKeyDown={enterKeyPressHandler}
         {...rest}
     />
 })

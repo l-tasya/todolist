@@ -40,7 +40,7 @@ export const EditableSpan: React.FC<IProps> = React.memo(({c1, title, disabled})
         :
         <TextField
             autoFocus
-            onKeyPress={enterHandler}
+            onKeyDown={enterHandler}
             onBlur={activateViewMode}
             value={value}
             type="text"
