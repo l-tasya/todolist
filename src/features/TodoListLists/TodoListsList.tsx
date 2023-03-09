@@ -1,80 +1,75 @@
 import {Header} from '../../common/styles/global';
 import Paper from '@mui/material/Paper/Paper';
-import {AddItem} from '../../common/components/AddItem/AddItem';
-import {TodoList} from '../TodoList/TodoList';
+import {AddItem} from '../../components/AddItem/AddItem';
+import {TodoList} from './TodoList/TodoList';
 import React, {useCallback, useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from '../../common/hooks/hooks';
-import {
-    addTodoListTC,
-    fetchTodoListsThunk,
-    removeTodoListTC,
-    setFilterAC,
-    updateTodoListTitleTC
-} from '../../redux/reducers/todoListReducer';
-import {addTaskTC, removeTaskTC, updateTaskStatusTC, updateTaskTitleTC} from '../../redux/reducers/tasksReducer';
-import {FilterType, TaskStatuses} from '../../common/types/types';
+import {useAppSelector} from '../../common/hooks/hooks';
 import styled from 'styled-components';
 import {Navigate} from 'react-router-dom';
+import {FilterType, TaskStatuses} from '../../api/types';
+import {useActions} from '../../utils/redux-utils';
+import {tasksActions, todoListActions} from "./index";
 
 const Grid = styled.div`
-      display: grid;
-      grid-gap: 8px;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 0.8fr));
-      justify-content: center;
-      grid-auto-rows: minmax(150px, 250px);
-      
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 0.8fr));
+  justify-content: center;
+  grid-auto-rows: minmax(150px, 250px);
+
 `
 
 interface IProps {
     demo?: boolean
 }
 
-export const TodoListsLists: React.FC<IProps> = React.memo(({}) => {
-        const dispatch = useAppDispatch()
+export const TodoListsList: React.FC<IProps> = React.memo(({}) => {
         const tasks = useAppSelector(t => t.tasks)
         const todoLists = useAppSelector(t => t.todoList)
         const isLoggedIn = useAppSelector(t => t.auth.isLoggedIn)
+        const {
+            fetchTodoListsTC,
+            removeTodoListTC,
+            addTodoListTC,
+            changeTodoListTitleTC,
+            changeTodolistFilter
+        } = useActions(todoListActions)
+        const {removeTaskTC, updateTaskTC, addTaskTC} = useActions(tasksActions)
         useEffect(() => {
             if (isLoggedIn) {
-                dispatch(fetchTodoListsThunk())
+                fetchTodoListsTC()
             }
-        }, [])
+        }, [fetchTodoListsTC])
 
 
         //task
         const removeTask = useCallback((todoListID: string, taskID: string) => {
-            const thunk = removeTaskTC(todoListID, taskID);
-            dispatch(thunk);
+            removeTaskTC({todoListID, taskID});
         }, [])
         const changeStatus = useCallback((todoListID: string, taskID: string, status: TaskStatuses) => {
-            const thunk = updateTaskStatusTC(todoListID, taskID, status)
-            dispatch(thunk)
+            updateTaskTC({todoListID, taskID, model: {status: status}})
         }, [])
         const changeTaskTitle = useCallback((todoListID: string, taskID: string, newTitle: string) => {
-            const thunk = updateTaskTitleTC(todoListID, taskID, newTitle)
-            dispatch(thunk)
+            updateTaskTC({todoListID, taskID, model: {title: newTitle,}})
         }, [])
         const addTask = useCallback((todoListID: string, newValue: string) => {
-            const thunk = addTaskTC(todoListID, newValue)
-            dispatch(thunk)
+            addTaskTC({todoListID, title: newValue})
         }, [])
 
         //todoList
         const setFilter = useCallback((todoListID: string, newValue: FilterType) => {
-            const thunk = setFilterAC(todoListID, newValue)
-            dispatch(thunk)
+            changeTodolistFilter({id: todoListID, filter: newValue})
         }, [])
         const removeTodoList = useCallback((todoListID: string) => {
-            const thunk = removeTodoListTC(todoListID)
-            dispatch(thunk)
+            removeTodoListTC(todoListID)
+
         }, [])
         const addTodoList = useCallback((newValue: string) => {
-            const thunk = addTodoListTC(newValue)
-            dispatch(thunk)
+            addTodoListTC(newValue)
         }, [])
         const changeTodoListTitle = useCallback((todoListID: string, newTitle: string) => {
-            const thunk = updateTodoListTitleTC(todoListID, newTitle)
-            dispatch(thunk)
+            changeTodoListTitleTC({todoListID, title: newTitle})
+
         }, [])
 
         if (!isLoggedIn) {

@@ -1,8 +1,7 @@
 import {ComponentMeta, ComponentStory} from "@storybook/react";
 import {App} from "./App";
 import React from "react";
-import {ReduxStoreProviderDecorator} from "./common/stories/ReduxStoreProviderDecorator";
-
+import {ReduxStoreProviderDecorator} from "../common/stories/ReduxStoreProviderDecorator";
 
 export default {
     title: "App Component",
@@ -11,6 +10,7 @@ export default {
 } as ComponentMeta<typeof App>
 
 
+export const a = 3;
 const Template: ComponentStory<typeof App> = () => <App/>
 
 

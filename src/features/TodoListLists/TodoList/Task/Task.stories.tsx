@@ -1,9 +1,10 @@
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
-import {ComponentMeta, ComponentStory} from "@storybook/react";
+import { Task } from "./Task";
 import {action} from "@storybook/addon-actions";
-import {Task} from "./Task";
-import { TaskPriorities, TaskStatuses } from "../../../common/types/types";
+import {TaskPriorities, TaskStatuses } from "../../../../api/types";
 
+export const a = 3;
 export default {
     title: "Task Component",
     component: Task,

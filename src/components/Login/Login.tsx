@@ -7,12 +7,13 @@ import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from 'formik';
-import {loginTC} from '../../redux/reducers/auth-reducer';
-import {useAppDispatch, useAppSelector} from '../../common/hooks/hooks';
+import {useAppSelector} from '../../common/hooks/hooks';
 import {Navigate} from 'react-router-dom';
 import Paper from '@mui/material/Paper/Paper';
 import styled from 'styled-components';
 import {Title} from '../../common/styles/global';
+import {authActions} from "../../features/Auth";
+import {useActions} from "../../utils/redux-utils";
 
 
 type FormikErrorType = {
@@ -41,27 +42,29 @@ type Initial = {
     rememberMe: boolean
 }
 const Container = styled(Paper)`
-    width: 300px;
-    padding: 8px;
+  width: 300px;
+  padding: 8px;
 `
 const SubTitle = styled(Title)`
   font-size: 10px;
-  text-align:left;
+  text-align: left;
   color: gray;
-    span{
+
+  span {
     font-size: 8px;
-    font-family: MyFont,serif;
+    font-family: MyFont, serif;
     color: white;
     background: #0000cd;
     padding: 2px;
-    }
-    div{
+  }
+
+  div {
     font-size: 12px;
-    }
-    
+  }
+
 `
 export const Login: React.FC = () => {
-    const dispatch = useAppDispatch()
+    const {logInTC} = useActions(authActions)
     const isLoggedIn = useAppSelector(t => t.auth.isLoggedIn)
     const formik = useFormik({
         initialValues: {
@@ -72,14 +75,13 @@ export const Login: React.FC = () => {
         validate,
         onSubmit: (values) => {
             let payload = {...values}
-            dispatch(loginTC(payload))
+            logInTC(payload)
             formik.resetForm()
         },
     })
     if (isLoggedIn) {
         return <Navigate to={'/todolist/'}/>
     }
-
     return <Container>
         <Title style={{fontSize: '20px'}}>Login</Title>
         <Grid container justifyContent={'center'}>

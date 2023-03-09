@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from 'axios';
-import {ITask, ITodoList, ResultCodes, TaskPriorities, TaskStatuses} from '../common/types/types';
+import {ITask, ITodoList, ResultCodes, TaskPriorities, TaskStatuses} from "./types";
 
 
 const settings = {
@@ -19,49 +19,44 @@ export type LoginPayload = {
     rememberMe: boolean
 }
 export const authAPI = {
-    me() {
-        return instance.get<ResponseType<{ userId: number }>>('auth/me')
-            .then((res) => {
-                return res.data
-            })
+    me: async() => {
+        return await instance.get<ResponseType<{ userId: number }>>('auth/me')
     },
-    logIn(data: LoginPayload) {
-        return instance.post<{ data: LoginPayload }, AxiosResponse<ResponseType<{ userId: number }>>>('auth/login', data)
-            .then(res => res.data);
+    logIn: async (data: LoginPayload) => {
+        let response = await instance.post<{ data: LoginPayload }, AxiosResponse<ResponseType<{ userId: number }>>>('auth/login', data)
+        return response.data
     },
-    logOut() {
-        return instance.delete<ResponseType>('auth/login')
+    logOut: async() => {
+let response = await instance.delete<ResponseType>('auth/login')
+        return response.data
     }
 
 }
 export const todoListsAPI = {
-    getTodoLists: () => {
-        return instance.get<ITodoList[]>('todo-lists');
+    getTodoLists: async () => {
+        return await instance.get<ITodoList[]>('todo-lists');
     },
-    createTodoList: (title: string) => {
-        return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: ITodoList }>>>('todo-lists', {title: title});
+    createTodoList: async (title: string) => {
+        return await instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: ITodoList }>>>('todo-lists', {title: title});
     },
-    deleteTodoList: (todoListID: string) => {
-        return instance.delete<ResponseType>(`todo-lists/${todoListID}`);
+    deleteTodoList: async (todoListID: string) => {
+        return await instance.delete<ResponseType>(`todo-lists/${todoListID}`);
     },
-    updateTodoList: (todoListID: string, title: string) => {
-        return instance
-            .put<ResponseType>(
-                `todo-lists/${todoListID}`,
-                {title: title}
-            );
+    updateTodoList: async (todoListID: string, title: string) => {
+        return await instance.put<ResponseType>(`todo-lists/${todoListID}`, {title: title});
     },
-    getTasks: (todoListID: string) => {
-        return instance.get<GetTasksResponseType>(`todo-lists/${todoListID}/tasks`);
+    getTasks:  async (todoListID: string) => {
+        let response =  await instance.get<GetTasksResponseType>(`todo-lists/${todoListID}/tasks`);
+        return response.data
     },
-    createTask: (todoListID: string, title: string) => {
-        return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: ITask }>>>(`todo-lists/${todoListID}/tasks`, {title: title})
+    createTask: async (todoListID: string, title: string) => {
+        return await instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: ITask }>>>(`todo-lists/${todoListID}/tasks`, {title: title})
     },
-    deleteTask: (todoListID: string, taskID: string) => {
-        return instance.delete<ResponseType>(`todo-lists/${todoListID}/tasks/${taskID}`)
+    deleteTask: async (todoListID: string, taskID: string) => {
+        return await instance.delete<ResponseType>(`todo-lists/${todoListID}/tasks/${taskID}`)
     },
-    updateTask: (todoListID: string, taskID: string, model: UpdateTaskModelType) => {
-        return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: ITask }>>>(`todo-lists/${todoListID}/tasks/${taskID}`, model)
+    updateTask: async (todoListID: string, taskID: string, model: UpdateTaskModelType) => {
+        return await instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: ITask }>>>(`todo-lists/${todoListID}/tasks/${taskID}`, model)
     }
 }
 export type ResponseType<D = {}> = {

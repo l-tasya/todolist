@@ -1,9 +1,9 @@
 import React, {ChangeEvent, useCallback} from 'react';
-import {EditableSpan} from '../../../common/components/EditableSpan/EditableSpan';
-import {RemoveItem} from '../../../common/components/RemoveC/RemoveItem';
+import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan';
+import {RemoveItem} from '../../../../components/RemoveC/RemoveItem';
 import {Container} from './styles';
-import {ITask, TaskStatuses} from '../../../common/types/types';
-import {RequestStatusType} from '../../../redux/reducers/app-reducer';
+import {RequestStatusType} from '../../../Application/app-reducer';
+import {ITask, TaskStatuses} from '../../../../api/types';
 
 interface IProps {
     changeStatus: (todoID: string, taskID: string, status: TaskStatuses) => void

@@ -1,14 +1,15 @@
 import React, {useCallback, useEffect} from 'react';
-import {AddItem} from '../../common/components/AddItem/AddItem';
-import {EditableSpan} from '../../common/components/EditableSpan/EditableSpan';
-import {RemoveItem} from '../../common/components/RemoveC/RemoveItem';
+import {AddItem} from '../../../components/AddItem/AddItem';
+import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
+import {RemoveItem} from '../../../components/RemoveC/RemoveItem';
 import {Container, Footer, Header, List} from './styles';
 import {Task} from './Task/Task';
-import {FilterType, ITaskDomain, TaskStatuses} from '../../common/types/types';
-import {fetchTasksTC} from '../../redux/reducers/tasksReducer';
-import {useAppDispatch} from '../../common/hooks/hooks';
 import ToggleButton from '@mui/material/ToggleButton/ToggleButton';
-import {RequestStatusType} from '../../redux/reducers/app-reducer';
+import {RequestStatusType} from '../../Application/app-reducer';
+import {ITaskDomain} from '../../../common/types/types';
+import {FilterType, TaskStatuses} from '../../../api/types';
+import {useActions} from "../../../utils/redux-utils";
+import {tasksActions} from "../index";
 
 interface IProps {
     id: string
@@ -25,11 +26,25 @@ interface IProps {
     addTask: (todoListID: string, newValue: string) => void
 }
 
-export const TodoList: React.FC<IProps> = React.memo<IProps>(({title, filter, tasks, setFilter, id, removeTask, removeTodoList, changeStatus, changeTodoListTitle, changeTaskTitle, addTask, entityStatus}) => {
-        const dispatch = useAppDispatch()
+export const TodoList: React.FC<IProps> = React.memo<IProps>(({
+                                                                  title,
+                                                                  filter,
+                                                                  tasks,
+                                                                  setFilter,
+                                                                  id,
+                                                                  removeTask,
+                                                                  removeTodoList,
+                                                                  changeStatus,
+                                                                  changeTodoListTitle,
+                                                                  changeTaskTitle,
+                                                                  addTask,
+                                                                  entityStatus
+                                                              }) => {
+        const {fetchTasksTC} = useActions(tasksActions)
         useEffect(() => {
-            dispatch(fetchTasksTC(id))
-        }, [dispatch, id])
+            debugger;
+            fetchTasksTC(id)
+        }, [id])
 
 
         const addTaskCallback = useCallback((title: string) => addTask(id, title), [id, addTask])

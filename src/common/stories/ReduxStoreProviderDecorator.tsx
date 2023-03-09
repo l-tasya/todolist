@@ -1,17 +1,21 @@
 import {Provider} from "react-redux";
-import {AppStateType} from "../../redux/store/store";
 import React from "react";
-import {todoListReducer} from "../../redux/reducers/todoListReducer";
-import {tasksReducer} from "../../redux/reducers/tasksReducer";
 import {combineReducers, createStore} from "redux";
+import {AppRootState} from "../../utils/types";
+
+import {authReducer} from "../../features/Auth";
+import {appReducer} from "../../features/Application";
+import {tasksReducer, todoListReducer} from "../../features/TodoListLists";
 
 
 const rootReducer = combineReducers({
-    tasks: tasksReducer,
+    auth: authReducer,
+    app: appReducer,
     todoList: todoListReducer,
-})
+    tasks: tasksReducer
 
-const initGlobalState: AppStateType = {
+})
+const initGlobalState: AppRootState = {
     todoList: [
         {
             id: "todoID1",
@@ -32,12 +36,13 @@ const initGlobalState: AppStateType = {
     ],
     auth: {
         isLoggedIn: false,
-        isInitialized: false,
+
     }
     ,
     app: {
         status: 'succeeded',
-        error: null
+        error: null,
+        isInitialized: false,
     },
     tasks: {
         ["todoID1"]: [
@@ -73,7 +78,7 @@ const initGlobalState: AppStateType = {
     }
 }
 
-export const storyBookStore = createStore(rootReducer, initGlobalState as AppStateType)
+export const storyBookStore = createStore(rootReducer, initGlobalState as AppRootState)
 export const ReduxStoreProviderDecorator = (story: any) => {
     return <Provider store={storyBookStore}>
         {story()}
