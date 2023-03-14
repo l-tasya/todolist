@@ -27,10 +27,10 @@ export const TodoList: React.FC<IProps> = React.memo<IProps>(({
                                                                   entityStatus
                                                               }) => {
         const {fetchTasksTC, addTaskTC} = useActions(tasksActions)
-        const {changeTodolistFilter, removeTodoListTC, changeTodoListTitleTC, changeTodolistEntityStatus} = useActions(todoListActions)
+        const {changeTodolistFilter, removeTodoListTC, changeTodoListTitleTC} = useActions(todoListActions)
         useEffect(() => {
             fetchTasksTC(id)
-        }, [id])
+        }, [id, fetchTasksTC])
 
         const addTaskCallback = useCallback((title: string) => addTaskTC({todoListID: id, title: title}), [id, addTaskTC])
         const changeTodoListTitleCallback = useCallback((newValue: string) => {
@@ -51,7 +51,7 @@ export const TodoList: React.FC<IProps> = React.memo<IProps>(({
 
         const changeFilter = useCallback((e: React.MouseEvent<HTMLElement>, newValue: FilterType) => {
             changeTodolistFilter({id, filter: newValue})
-        }, [changeTodolistFilter, id])
+        }, [changeTodolistFilter,id])
 
 
         const tasksElements = resultTasks?.map(t => {
@@ -76,14 +76,7 @@ export const TodoList: React.FC<IProps> = React.memo<IProps>(({
                 <ToggleButton value={'All'}>All</ToggleButton>
                 <ToggleButton value={'Completed'}>Completed</ToggleButton>
                 <ToggleButton value={'Active'}>Active</ToggleButton>
-            </Footer><div>
-            <button onClick={()=>changeTodolistEntityStatus({id: id, status: 'loading'})}>
-                loading
-            </button>
-            <button onClick={()=>changeTodolistEntityStatus({id: id, status: 'succeeded'})}>
-                successed
-            </button>
-        </div>
+            </Footer>
         </Container>
     }
 )

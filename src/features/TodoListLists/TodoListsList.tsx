@@ -7,7 +7,7 @@ import {useAppSelector} from '../../common/hooks/hooks';
 import styled from 'styled-components';
 import {Navigate} from 'react-router-dom';
 import {useActions} from '../../utils/redux-utils';
-import {tasksActions, todoListActions} from "./index";
+import {todoListActions} from "./index";
 
 const Grid = styled.div`
   display: grid;
@@ -22,7 +22,7 @@ interface IProps {
     demo?: boolean
 }
 
-export const TodoListsList: React.FC<IProps> = React.memo(({}) => {
+export const TodoListsList: React.FC<IProps> = React.memo(() => {
         const tasks = useAppSelector(t => t.tasks)
         const todoLists = useAppSelector(t => t.todoList)
         const isLoggedIn = useAppSelector(t => t.auth.isLoggedIn)
@@ -31,38 +31,12 @@ export const TodoListsList: React.FC<IProps> = React.memo(({}) => {
             if (isLoggedIn) {
                 fetchTodoListsTC()
             }
-        }, [fetchTodoListsTC])
+        }, [fetchTodoListsTC,isLoggedIn])
 
 
-        //task
-        // const removeTask = useCallback((todoListID: string, taskID: string) => {
-        //     removeTaskTC({todoListID, taskID});
-        // }, [])
-        // const changeStatus = useCallback((todoListID: string, taskID: string, status: TaskStatuses) => {
-        //     updateTaskTC({todoListID, taskID, model: {status: status}})
-        // }, [])
-        // const changeTaskTitle = useCallback((todoListID: string, taskID: string, newTitle: string) => {
-        //     updateTaskTC({todoListID, taskID, model: {title: newTitle,}})
-        // }, [])
-        // const addTask = useCallback((todoListID: string, newValue: string) => {
-        //     addTaskTC({todoListID, title: newValue})
-        // }, [])
-
-        //todoList
-        // const setFilter = useCallback((todoListID: string, newValue: FilterType) => {
-        //     changeTodolistFilter({id: todoListID, filter: newValue})
-        // }, [])
-        // const removeTodoList = useCallback((todoListID: string) => {
-        //     removeTodoListTC(todoListID)
-        //
-        // }, [])
-        // const changeTodoListTitle = useCallback((todoListID: string, newTitle: string) => {
-        //     changeTodoListTitleTC({todoListID, title: newTitle})
-        //
-        // }, [])
         const addTodoList = useCallback((newValue: string) => {
             addTodoListTC(newValue)
-        }, [])
+        }, [addTodoListTC])
 
 
         if (!isLoggedIn) {

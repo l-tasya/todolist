@@ -25,22 +25,22 @@ export const Task: React.FC<IProps> = React.memo(({todoID, task, entity}) => {
                     title: title,
                 }
             })
-        }, [todoID, task.id])
+        }, [todoID, task.id, updateTaskTC])
         const changeStatus = useCallback((newValue: TaskStatuses) => {
             updateTaskTC({
                 todoListID: todoID, taskID: task.id, model: {
                     status: newValue,
                 }
             })
-        }, [todoID, task.id])
+        }, [todoID, task.id,updateTaskTC])
         const removeTask = useCallback(()=>{
             removeTaskTC({todoListID: todoID, taskID: task.id})
-        },[todoID, task.id])
-        const suicide = useCallback(() => removeTask(), [removeTask, task.id, todoID])
+        },[removeTaskTC, todoID,task.id])
+        const suicide = useCallback(() => removeTask(), [removeTask])
         const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
             changeStatus(e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)
-        }, [changeStatus, task.id, todoID])
-        const changeTitle = useCallback((value: string) => changeTaskTitle(value), [task.id, todoID, changeTaskTitle])
+        }, [changeStatus])
+        const changeTitle = useCallback((value: string) => changeTaskTitle(value), [ changeTaskTitle])
 
         return <Container>
             <input type={'checkbox'}
