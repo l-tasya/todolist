@@ -11,11 +11,6 @@ export default {
 } as ComponentMeta<typeof Task>;
 
 const Template: ComponentStory<typeof Task> = (args) => <Task {...args}/>
-
-const changeTaskTitleAction = action("Title changed")
-const changeStatusAction = action("Checkbox changed")
-const removeTaskAction = action("Task removed")
-
 export const Task1 = Template.bind({})
 
 Task1.args = {
@@ -33,7 +28,4 @@ Task1.args = {
         priority: TaskPriorities.Low
     },
 
-    changeTaskTitle: changeTaskTitleAction,
-    changeStatus: changeStatusAction,
-    removeTask: removeTaskAction,
 }

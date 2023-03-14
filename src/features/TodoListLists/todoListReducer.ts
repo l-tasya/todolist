@@ -1,6 +1,6 @@
 import {todoListsAPI} from '../../api/todolists-api';
 import {FilterType, ITodoList, ITodoListDomain, ResultCodes} from '../../api/types';
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAction, createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ThunkError} from "../../utils/types";
 import {appActions} from "../Application";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
@@ -26,7 +26,7 @@ export const fetchTodoListsTC = createAsyncThunk<ITodoList[], void, ThunkError>(
 })
 export const addTodoListTC = createAsyncThunk<ITodoList, string, ThunkError>(`todolist/addTodoList`, async (title, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus({status: "loading"}))
-    debugger
+
     try {
         const response = await todoListsAPI.createTodoList(title)
         if (response.data.resultCode === ResultCodes.Success) {
@@ -34,7 +34,7 @@ export const addTodoListTC = createAsyncThunk<ITodoList, string, ThunkError>(`to
             debugger
             return response.data.data.item
         } else {
-            handleAsyncServerAppError(response.data, thunkAPI)
+            return handleAsyncServerAppError(response.data, thunkAPI)
         }
     } catch (e) {
         if (e instanceof AxiosError) {
@@ -53,7 +53,7 @@ export const removeTodoListTC = createAsyncThunk<string, string, ThunkError>(`to
             thunkAPI.dispatch(setAppStatus({status: "succeeded"}))
             return param
         } else {
-            handleAsyncServerAppError(response.data, thunkAPI)
+            return handleAsyncServerAppError(response.data, thunkAPI)
         }
     } catch (e) {
         if (e instanceof AxiosError) {
@@ -101,7 +101,8 @@ export const slice = createSlice({
         changeTodolistEntityStatus(state, action: PayloadAction<{ id: string, status: RequestStatusType }>) {
             const index = state.findIndex(tl => tl.id === action.payload.id)
             state[index].entityStatus = action.payload.status
-        }
+        },
+
     },
     extraReducers: builder => builder
         .addCase(addTodoListTC.fulfilled, (state, action) => {
@@ -120,4 +121,9 @@ export const slice = createSlice({
                 item.title = action.payload.title
             }
         })
+        .addCase(clearDATA, (state) => {
+            return []
+        })
 })
+
+export const clearDATA = createAction('clearData');

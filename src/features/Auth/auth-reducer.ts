@@ -1,24 +1,25 @@
-import {createAsyncThunk, PayloadAction, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {appActions} from "../Application";
 import {authAPI, LoginPayload} from "../../api/todolists-api";
 import {ThunkError} from "../../utils/types";
-import {ResultCodes} from "../../api/types";
+import {FieldErrorType, ResultCodes} from "../../api/types";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
-import { AxiosError } from "axios";
+import {AxiosError} from "axios";
+import {clearDATA} from "../TodoListLists/todoListReducer";
 
 const initialState = {
     isLoggedIn: false as boolean,
 }
 const {setAppStatus} = appActions;
-const logInTC = createAsyncThunk<void, LoginPayload, ThunkError >('auth/logIn', async (param,thunkAPI)=>{
+const logInTC = createAsyncThunk<void, LoginPayload, { rejectValue: { errors: Array<string>, fieldsErrors?: Array<FieldErrorType> } } >('auth/logIn', async (param,thunkAPI)=>{
     thunkAPI.dispatch(setAppStatus({status: "loading"}))
     try{
-        let data = await authAPI.logIn(param)
-        if(data.resultCode === ResultCodes.Success){
+        let response = await authAPI.logIn(param)
+        if(response.data.resultCode === ResultCodes.Success){
             thunkAPI.dispatch(setAppStatus({status:'succeeded'}))
             return
         }else{
-            handleAsyncServerAppError(data, thunkAPI)
+            return handleAsyncServerAppError(response.data, thunkAPI)
         }
     }
     catch (e){
@@ -37,9 +38,12 @@ const logOutTC = createAsyncThunk<void, void, ThunkError>('auth/logOut', async (
         let data = await authAPI.logOut()
         if(data.resultCode === ResultCodes.Success){
             thunkAPI.dispatch(setAppStatus({status:'succeeded'}))
+            //data clean
+            thunkAPI.dispatch(clearDATA())
+            //
             return
         }else{
-            handleAsyncServerAppError(data, thunkAPI)
+            return handleAsyncServerAppError(data, thunkAPI)
         }
     }
     catch (e){

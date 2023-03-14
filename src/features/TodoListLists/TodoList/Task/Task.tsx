@@ -4,11 +4,10 @@ import {RemoveItem} from '../../../../components/RemoveC/RemoveItem';
 import {Container} from './styles';
 import {RequestStatusType} from '../../../Application/app-reducer';
 import {ITask, TaskStatuses} from '../../../../api/types';
+import {tasksActions} from "../../index";
+import {useActions} from "../../../../utils/redux-utils";
 
 interface IProps {
-    changeStatus: (todoID: string, taskID: string, status: TaskStatuses) => void
-    changeTaskTitle: (todoID: string, taskID: string, value: string) => void
-    removeTask: (todoID: string, id: string) => void
     todoID: string
     entity: RequestStatusType
     //task
@@ -16,12 +15,32 @@ interface IProps {
 
 }
 
-export const Task: React.FC<IProps> = React.memo(({changeStatus, removeTask, changeTaskTitle, todoID, task, entity}) => {
-        const suicide = useCallback(() => removeTask(todoID, task.id), [removeTask, task.id, todoID])
+export const Task: React.FC<IProps> = React.memo(({todoID, task, entity}) => {
+
+        const {removeTaskTC, updateTaskTC} = useActions(tasksActions)
+
+        const changeTaskTitle = useCallback((title: string) => {
+            updateTaskTC({
+                todoListID: todoID, taskID: task.id, model: {
+                    title: title,
+                }
+            })
+        }, [todoID, task.id])
+        const changeStatus = useCallback((newValue: TaskStatuses) => {
+            updateTaskTC({
+                todoListID: todoID, taskID: task.id, model: {
+                    status: newValue,
+                }
+            })
+        }, [todoID, task.id])
+        const removeTask = useCallback(()=>{
+            removeTaskTC({todoListID: todoID, taskID: task.id})
+        },[todoID, task.id])
+        const suicide = useCallback(() => removeTask(), [removeTask, task.id, todoID])
         const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-            changeStatus(todoID, task.id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)
+            changeStatus(e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)
         }, [changeStatus, task.id, todoID])
-        const changeTitle = useCallback((value: string) => changeTaskTitle(todoID, task.id, value), [task.id, todoID, changeTaskTitle])
+        const changeTitle = useCallback((value: string) => changeTaskTitle(value), [task.id, todoID, changeTaskTitle])
 
         return <Container>
             <input type={'checkbox'}

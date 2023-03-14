@@ -6,7 +6,6 @@ import React, {useCallback, useEffect} from 'react';
 import {useAppSelector} from '../../common/hooks/hooks';
 import styled from 'styled-components';
 import {Navigate} from 'react-router-dom';
-import {FilterType, TaskStatuses} from '../../api/types';
 import {useActions} from '../../utils/redux-utils';
 import {tasksActions, todoListActions} from "./index";
 
@@ -27,14 +26,7 @@ export const TodoListsList: React.FC<IProps> = React.memo(({}) => {
         const tasks = useAppSelector(t => t.tasks)
         const todoLists = useAppSelector(t => t.todoList)
         const isLoggedIn = useAppSelector(t => t.auth.isLoggedIn)
-        const {
-            fetchTodoListsTC,
-            removeTodoListTC,
-            addTodoListTC,
-            changeTodoListTitleTC,
-            changeTodolistFilter
-        } = useActions(todoListActions)
-        const {removeTaskTC, updateTaskTC, addTaskTC} = useActions(tasksActions)
+        const {fetchTodoListsTC, addTodoListTC} = useActions(todoListActions)
         useEffect(() => {
             if (isLoggedIn) {
                 fetchTodoListsTC()
@@ -43,34 +35,35 @@ export const TodoListsList: React.FC<IProps> = React.memo(({}) => {
 
 
         //task
-        const removeTask = useCallback((todoListID: string, taskID: string) => {
-            removeTaskTC({todoListID, taskID});
-        }, [])
-        const changeStatus = useCallback((todoListID: string, taskID: string, status: TaskStatuses) => {
-            updateTaskTC({todoListID, taskID, model: {status: status}})
-        }, [])
-        const changeTaskTitle = useCallback((todoListID: string, taskID: string, newTitle: string) => {
-            updateTaskTC({todoListID, taskID, model: {title: newTitle,}})
-        }, [])
-        const addTask = useCallback((todoListID: string, newValue: string) => {
-            addTaskTC({todoListID, title: newValue})
-        }, [])
+        // const removeTask = useCallback((todoListID: string, taskID: string) => {
+        //     removeTaskTC({todoListID, taskID});
+        // }, [])
+        // const changeStatus = useCallback((todoListID: string, taskID: string, status: TaskStatuses) => {
+        //     updateTaskTC({todoListID, taskID, model: {status: status}})
+        // }, [])
+        // const changeTaskTitle = useCallback((todoListID: string, taskID: string, newTitle: string) => {
+        //     updateTaskTC({todoListID, taskID, model: {title: newTitle,}})
+        // }, [])
+        // const addTask = useCallback((todoListID: string, newValue: string) => {
+        //     addTaskTC({todoListID, title: newValue})
+        // }, [])
 
         //todoList
-        const setFilter = useCallback((todoListID: string, newValue: FilterType) => {
-            changeTodolistFilter({id: todoListID, filter: newValue})
-        }, [])
-        const removeTodoList = useCallback((todoListID: string) => {
-            removeTodoListTC(todoListID)
-
-        }, [])
+        // const setFilter = useCallback((todoListID: string, newValue: FilterType) => {
+        //     changeTodolistFilter({id: todoListID, filter: newValue})
+        // }, [])
+        // const removeTodoList = useCallback((todoListID: string) => {
+        //     removeTodoListTC(todoListID)
+        //
+        // }, [])
+        // const changeTodoListTitle = useCallback((todoListID: string, newTitle: string) => {
+        //     changeTodoListTitleTC({todoListID, title: newTitle})
+        //
+        // }, [])
         const addTodoList = useCallback((newValue: string) => {
             addTodoListTC(newValue)
         }, [])
-        const changeTodoListTitle = useCallback((todoListID: string, newTitle: string) => {
-            changeTodoListTitleTC({todoListID, title: newTitle})
 
-        }, [])
 
         if (!isLoggedIn) {
             return <Navigate to={'/todolist/login'}/>
@@ -88,16 +81,8 @@ export const TodoListsList: React.FC<IProps> = React.memo(({}) => {
                         id={t.id}
                         title={t.title}
                         filter={t.filter}
-
                         tasks={tasks[t.id]}
                         entityStatus={t.entityStatus}
-                        setFilter={setFilter}
-                        removeTask={removeTask}
-                        removeTodoList={removeTodoList}
-                        changeStatus={changeStatus}
-                        changeTodoListTitle={changeTodoListTitle}
-                        changeTaskTitle={changeTaskTitle}
-                        addTask={addTask}
                     />)
                 }
             </Grid>

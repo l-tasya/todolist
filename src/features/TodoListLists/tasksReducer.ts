@@ -1,5 +1,5 @@
 import {ITaskDomain, TasksReducerType} from "../../common/types/types";
-import {createAsyncThunk, PayloadAction,createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RequestStatusType} from "../Application/app-reducer";
 import {AppRootState, ThunkError} from "../../utils/types";
 import {appActions} from "../Application";
@@ -7,10 +7,11 @@ import {todoListsAPI, UpdateTaskModelType} from "../../api/todolists-api";
 import {ITask, ResultCodes, TaskPriorities, TaskStatuses} from "../../api/types";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
 import {AxiosError} from "axios";
-import {asyncTodoListActions} from "./todoListReducer";
+import {asyncTodoListActions, clearDATA} from "./todoListReducer";
 
 
 const {setAppStatus} = appActions;
+
 
 const fetchTasksTC = createAsyncThunk<{ tasks: ITask[], todoListID: string }, string, ThunkError>(
     'task/fetchTasks',
@@ -32,6 +33,7 @@ const fetchTasksTC = createAsyncThunk<{ tasks: ITask[], todoListID: string }, st
 
 const addTaskTC = createAsyncThunk<ITask, { todoListID: string, title: string }, ThunkError>('task/addTask', async (param, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus({status: "loading"}))
+
     try {
         const response = await todoListsAPI.createTask(param.todoListID, param.title)
         if (response.data.resultCode === ResultCodes.Success) {
@@ -73,7 +75,8 @@ const removeTaskTC = createAsyncThunk<{ todoListID: string, taskID: string }, { 
 type Param = { todoListID: string, model: UpdateDomainTaskModelType, taskID: string }
 const updateTaskTC = createAsyncThunk<Param, Param>(
     'task/updateTask',
-    async (param:Param , thunkAPI) => {
+    async (param: Param, thunkAPI) => {
+        thunkAPI.dispatch(setAppStatus({status: "loading"}))
         const state = thunkAPI.getState() as AppRootState
 
         const task = state.tasks[param.todoListID].find(t => t.id === param.taskID)
@@ -92,6 +95,7 @@ const updateTaskTC = createAsyncThunk<Param, Param>(
         const res = await todoListsAPI.updateTask(param.todoListID, param.taskID, apiModel)
         try {
             if (res.data.resultCode === 0) {
+                thunkAPI.dispatch(setAppStatus({status: "succeeded"}))
                 return param
             } else {
                 return handleAsyncServerAppError(res.data, thunkAPI)
@@ -123,7 +127,7 @@ export const slice = createSlice({
             if (index > -1) {
                 tasks.splice(index, 1)
             }
-        }
+        },
     },
     extraReducers: builder => builder
         .addCase(asyncTodoListActions.addTodoListTC.fulfilled, (state, action) => {
@@ -143,7 +147,7 @@ export const slice = createSlice({
             }
         )
         .addCase(fetchTasksTC.fulfilled, (state, action) => {
-            state[action.payload.todoListID] = action.payload.tasks.map(t=>({...t, entityStatus: "idle"}))
+            state[action.payload.todoListID] = action.payload.tasks.map(t => ({...t, entityStatus: "idle"}))
         })
         .addCase(removeTaskTC.fulfilled, (state, action) => {
             const tasks = state[action.payload.todoListID]
@@ -158,6 +162,9 @@ export const slice = createSlice({
             if (index > -1) {
                 tasks[index] = {...tasks[index], ...action.payload.model}
             }
+        })
+        .addCase(clearDATA, (state) => {
+            return {}
         })
 
 })

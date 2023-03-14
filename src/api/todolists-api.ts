@@ -23,8 +23,7 @@ export const authAPI = {
         return await instance.get<ResponseType<{ userId: number }>>('auth/me')
     },
     logIn: async (data: LoginPayload) => {
-        let response = await instance.post<{ data: LoginPayload }, AxiosResponse<ResponseType<{ userId: number }>>>('auth/login', data)
-        return response.data
+        return  await instance.post('auth/login', data)
     },
     logOut: async() => {
 let response = await instance.delete<ResponseType>('auth/login')

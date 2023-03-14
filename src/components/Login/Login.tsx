@@ -73,10 +73,12 @@ export const Login: React.FC = () => {
             rememberMe: false
         } as Initial,
         validate,
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             let payload = {...values}
-            logInTC(payload)
-            formik.resetForm()
+            await logInTC(payload)
+            await formik.resetForm({
+                values: {password: '', rememberMe: values.rememberMe, email: values.email},
+            })
         },
     })
     if (isLoggedIn) {
@@ -103,6 +105,7 @@ export const Login: React.FC = () => {
                             <TextField
                                 label="Email"
                                 margin="normal"
+                                size="small"
                                 error={formik.touched.email && Boolean(formik.errors.email)}
                                 helperText={formik.touched.email && formik.errors.email}
                                 {...formik.getFieldProps('email')}
@@ -111,7 +114,7 @@ export const Login: React.FC = () => {
                             <TextField
                                 type="password"
                                 label="Password"
-                                margin="normal"
+                                size="small"
                                 error={formik.touched.password && Boolean(formik.errors.password)}
                                 helperText={formik.touched.password && formik.errors.password}
                                 {...formik.getFieldProps('password')}

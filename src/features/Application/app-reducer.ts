@@ -21,7 +21,7 @@ const initializeAppTC = createAsyncThunk('app/initializeApp', async (param, thun
     } else if (response.data.resultCode === ResultCodes.Error) {
         thunkAPI.dispatch(setIsLoggedIn(false))
     } else {
-        handleAsyncServerAppError(response.data, thunkAPI)
+        return handleAsyncServerAppError(response.data, thunkAPI)
     }
 })
 
