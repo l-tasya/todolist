@@ -19,7 +19,7 @@ export const App = () => {
     const isInitialized = useAppSelector(t => t.app.isInitialized)
     useEffect(() => {
         initializeAppTC()
-    }, [])
+    }, [initializeAppTC])
     if (!isInitialized) {
         return <div
             style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
