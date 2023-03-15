@@ -2,13 +2,13 @@ import {todoListsAPI} from '../../api/todolists-api';
 import {FilterType, ITodoList, ITodoListDomain, ResultCodes} from '../../api/types';
 import {createAction, createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ThunkError} from "../../utils/types";
-import {appActions} from "../Application";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
 import {AxiosError} from "axios";
 import {RequestStatusType} from '../Application/app-reducer';
+import {appActionsCommon} from "../CommonActions/App";
 
 
-const {setAppStatus} = appActions;
+const {setAppStatus} = appActionsCommon;
 export const fetchTodoListsTC = createAsyncThunk<ITodoList[], void, ThunkError>(`todolist/fetchTodoLists`, async (_, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus({status: "loading"}))
     try {
@@ -98,9 +98,9 @@ export const slice = createSlice({
             const index = state.findIndex(tl => tl.id === action.payload.id)
             state[index].filter = action.payload.filter
         },
-        changeTodolistEntityStatus(state, action: PayloadAction<{ id: string, status: RequestStatusType }>) {
+        changeTodolistEntityStatus(state, action: PayloadAction<{ id: string, entity: RequestStatusType }>) {
             const index = state.findIndex(tl => tl.id === action.payload.id)
-            state[index].entityStatus = action.payload.status
+            state[index].entityStatus = action.payload.entity
         },
 
     },
@@ -121,7 +121,7 @@ export const slice = createSlice({
                 item.title = action.payload.title
             }
         })
-        .addCase(clearDATA, (state) => {
+        .addCase(clearDATA, () => {
             return []
         })
 })

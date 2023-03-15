@@ -2,15 +2,15 @@ import {ITaskDomain, TasksReducerType} from "../../common/types/types";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RequestStatusType} from "../Application/app-reducer";
 import {AppRootState, ThunkError} from "../../utils/types";
-import {appActions} from "../Application";
 import {todoListsAPI, UpdateTaskModelType} from "../../api/todolists-api";
 import {ITask, ResultCodes, TaskPriorities, TaskStatuses} from "../../api/types";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
 import {AxiosError} from "axios";
 import {asyncTodoListActions, clearDATA} from "./todoListReducer";
+import {appActionsCommon} from "../CommonActions/App";
 
 
-const {setAppStatus} = appActions;
+const {setAppStatus} = appActionsCommon;
 
 
 const fetchTasksTC = createAsyncThunk<{ tasks: ITask[], todoListID: string }, string, ThunkError>(
@@ -121,11 +121,11 @@ export const slice = createSlice({
     name: "task",
     initialState: {} as TasksReducerType,
     reducers: {
-        changeTaskEntity(state, action: PayloadAction<{ todoListID: string, taskID: string, status: RequestStatusType }>) {
+        changeTaskEntity(state, action: PayloadAction<{ todoListID: string, taskID: string, entity: RequestStatusType }>) {
             const tasks = state[action.payload.todoListID];
             const index = tasks.findIndex(t => t.id === action.payload.taskID)
             if (index > -1) {
-                tasks.splice(index, 1)
+                tasks[index].entityStatus = action.payload.entity
             }
         },
     },
@@ -163,7 +163,7 @@ export const slice = createSlice({
                 tasks[index] = {...tasks[index], ...action.payload.model}
             }
         })
-        .addCase(clearDATA, (state) => {
+        .addCase(clearDATA, () => {
             return {}
         })
 
